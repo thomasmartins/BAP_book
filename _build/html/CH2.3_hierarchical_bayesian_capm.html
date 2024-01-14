@@ -1,0 +1,2790 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Bayesian techniques for factor models &#8212; Bayesian Methods in Asset Pricing</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CH2.3_hierarchical_bayesian_capm';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Chapter 3: Time series" href="CH3_time_series.html" />
+    <link rel="prev" title="Linear models: classic and Bayesian approaches" href="CH2.2_linear_models_bayesian.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="landing_intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/BAP_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/BAP_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="landing_intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH1_allocation.html">Chapter 1: Risk, return and allocation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH1.1_returns_mvo.html">Returns, risk and diversification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.2_bayes.html">Bayesian inference and computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.3_black_litterman.html">Black-Litterman model for portfolio allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="CH2_cross_section.html">Chapter 2: The cross section of asset returns</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="CH2.1_cross_section_factors.html">The cross-section of stock returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.2_linear_models_bayesian.html">Linear models: classic and Bayesian approaches</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Bayesian techniques for factor models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH3_time_series.html">Chapter 3: Time series</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH3.1_timeseries_stockprices.html">Time series of stock prices and returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.2_bayesian_timeseries.html">Time series modeling: classical and Bayesian approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.3_ARIMA_SV_ES_VAR.html">Bayesian state space approach for nonsynchronous trading</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref_chapter.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book/issues/new?title=Issue%20on%20page%20%2FCH2.3_hierarchical_bayesian_capm.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/CH2.3_hierarchical_bayesian_capm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bayesian techniques for factor models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-pooling-for-the-capm">Partial pooling for the CAPM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noncentered-parametrization-for-multilevel-models">Noncentered parametrization for multilevel models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-methods-for-multifactor-models">Regularization methods for multifactor models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bayesian-techniques-for-factor-models">
+<h1>Bayesian techniques for factor models<a class="headerlink" href="#bayesian-techniques-for-factor-models" title="Permalink to this heading">#</a></h1>
+<section id="partial-pooling-for-the-capm">
+<h2>Partial pooling for the CAPM<a class="headerlink" href="#partial-pooling-for-the-capm" title="Permalink to this heading">#</a></h2>
+<p>Bayesian hierarchical models, or partial pooling, have been gaining more relevance throughout the years. Ever since the benchmark “eight schools” study of Rubin (1981), hierarchical models have made their way into the Bayesian toolbox.</p>
+<p>Partial pooling is particularly useful when our data comes into “clusters”, and the assumption that the parameter for one cluster may contain useful information regarding others seems reasonable.</p>
+<p>The usual approaches either assume the data in different clusters comes from the same distribution (full pooling), or that the clusters are completely separate and do not contain information about each other (unpooled).</p>
+<p>In the case of partial pooling, we assume the data from each cluster is drawn from different parameters, but these parameters are drawn from the same distribution, thereby being called hierarchical.</p>
+<p>In Rubin’s eight schools example, Rubin sought to measure the effects of SAT-specific courses on students’ outcomes when taking the SAT. The clusters were each of the schools where the courses were taught. Both the assumptions that the schools did not contain any information about each other, or that the students’ outcomes in different schools were drawn from the exact same distribution seemed unreasonable.</p>
+<p>We can try and apply partial pooling in the context of the cross section of returns</p>
+<p>Remember the CAPM model: we describe the returns of each stock as a function of the market return. It turns out companies listed in the S&amp;P 500 can be grouped into sectors. These could work as our clusters.</p>
+<p>First we start off by scraping the return data from Yahoo Finance</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">yfinance</span> <span class="k">as</span> <span class="nn">yf</span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">companies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv&quot;</span><span class="p">)</span>
+
+<span class="n">tickers</span> <span class="o">=</span> <span class="n">companies</span><span class="p">[</span><span class="s2">&quot;Symbol&quot;</span><span class="p">]</span>
+<span class="n">tickers_list</span> <span class="o">=</span> <span class="n">tickers</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">tickers_list</span><span class="p">[</span><span class="mi">401</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RVTY&quot;</span>
+<span class="n">tickers_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span> <span class="n">tickers_list</span><span class="p">))</span>
+
+<span class="n">start_date</span> <span class="o">=</span> <span class="s2">&quot;2021-01-01&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2023-12-30&quot;</span>
+
+<span class="n">spy</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;SPY&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)</span>
+<span class="n">spy_ret</span> <span class="o">=</span> <span class="n">spy</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="n">returns_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tickers_list</span><span class="p">:</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">price</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="c1"># returns_df[i] = ret</span>
+    <span class="n">returns_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">returns_df</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">returns_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">tickers_list</span>
+<span class="n">returns_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">returns_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MMM</th>
+      <th>AOS</th>
+      <th>ABT</th>
+      <th>ABBV</th>
+      <th>ACN</th>
+      <th>ADBE</th>
+      <th>AMD</th>
+      <th>AES</th>
+      <th>AFL</th>
+      <th>A</th>
+      <th>...</th>
+      <th>WTW</th>
+      <th>GWW</th>
+      <th>WYNN</th>
+      <th>XEL</th>
+      <th>XYL</th>
+      <th>YUM</th>
+      <th>ZBRA</th>
+      <th>ZBH</th>
+      <th>ZION</th>
+      <th>ZTS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-01-05 00:00:00-05:00</th>
+      <td>-0.001687</td>
+      <td>0.006491</td>
+      <td>0.012373</td>
+      <td>0.010341</td>
+      <td>0.005693</td>
+      <td>0.000721</td>
+      <td>0.005092</td>
+      <td>0.033563</td>
+      <td>0.001621</td>
+      <td>0.008176</td>
+      <td>...</td>
+      <td>-0.008346</td>
+      <td>0.002895</td>
+      <td>0.030776</td>
+      <td>-0.009747</td>
+      <td>-0.001204</td>
+      <td>0.000095</td>
+      <td>0.006453</td>
+      <td>0.017302</td>
+      <td>0.015840</td>
+      <td>0.006969</td>
+    </tr>
+    <tr>
+      <th>2021-01-06 00:00:00-05:00</th>
+      <td>0.015212</td>
+      <td>0.034457</td>
+      <td>-0.002082</td>
+      <td>-0.008638</td>
+      <td>0.010933</td>
+      <td>-0.039902</td>
+      <td>-0.026302</td>
+      <td>0.039966</td>
+      <td>0.038604</td>
+      <td>0.027422</td>
+      <td>...</td>
+      <td>0.008416</td>
+      <td>0.005850</td>
+      <td>0.005990</td>
+      <td>0.022147</td>
+      <td>0.042181</td>
+      <td>0.005481</td>
+      <td>0.037444</td>
+      <td>0.028496</td>
+      <td>0.112359</td>
+      <td>0.014691</td>
+    </tr>
+    <tr>
+      <th>2021-01-07 00:00:00-05:00</th>
+      <td>-0.025662</td>
+      <td>0.012291</td>
+      <td>0.009707</td>
+      <td>0.010703</td>
+      <td>0.009435</td>
+      <td>0.024512</td>
+      <td>0.053471</td>
+      <td>-0.010008</td>
+      <td>-0.005564</td>
+      <td>0.026609</td>
+      <td>...</td>
+      <td>0.007609</td>
+      <td>0.007150</td>
+      <td>-0.009923</td>
+      <td>-0.019561</td>
+      <td>0.045389</td>
+      <td>-0.007612</td>
+      <td>0.036168</td>
+      <td>-0.005928</td>
+      <td>0.030509</td>
+      <td>-0.000897</td>
+    </tr>
+    <tr>
+      <th>2021-01-08 00:00:00-05:00</th>
+      <td>-0.018265</td>
+      <td>-0.011790</td>
+      <td>0.002785</td>
+      <td>0.005248</td>
+      <td>0.003647</td>
+      <td>0.015406</td>
+      <td>-0.006095</td>
+      <td>0.027901</td>
+      <td>-0.004252</td>
+      <td>0.007134</td>
+      <td>...</td>
+      <td>-0.007844</td>
+      <td>-0.008325</td>
+      <td>-0.006560</td>
+      <td>0.009208</td>
+      <td>-0.010140</td>
+      <td>0.014678</td>
+      <td>-0.008873</td>
+      <td>-0.002197</td>
+      <td>-0.025405</td>
+      <td>0.006647</td>
+    </tr>
+    <tr>
+      <th>2021-01-11 00:00:00-05:00</th>
+      <td>-0.008522</td>
+      <td>0.013177</td>
+      <td>-0.006899</td>
+      <td>0.016314</td>
+      <td>-0.014423</td>
+      <td>-0.022387</td>
+      <td>0.028230</td>
+      <td>0.001574</td>
+      <td>0.000450</td>
+      <td>0.008579</td>
+      <td>...</td>
+      <td>-0.021656</td>
+      <td>-0.012529</td>
+      <td>-0.009172</td>
+      <td>-0.020681</td>
+      <td>-0.012665</td>
+      <td>0.004853</td>
+      <td>0.020519</td>
+      <td>0.000315</td>
+      <td>0.023604</td>
+      <td>0.007614</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2023-12-22 00:00:00-05:00</th>
+      <td>0.007294</td>
+      <td>0.002084</td>
+      <td>0.005070</td>
+      <td>0.015401</td>
+      <td>0.016344</td>
+      <td>-0.002316</td>
+      <td>-0.002216</td>
+      <td>0.013263</td>
+      <td>0.002955</td>
+      <td>0.004534</td>
+      <td>...</td>
+      <td>0.007300</td>
+      <td>0.004624</td>
+      <td>-0.003307</td>
+      <td>0.008614</td>
+      <td>0.008506</td>
+      <td>0.000154</td>
+      <td>0.015454</td>
+      <td>0.007605</td>
+      <td>0.008712</td>
+      <td>0.001644</td>
+    </tr>
+    <tr>
+      <th>2023-12-26 00:00:00-05:00</th>
+      <td>0.016740</td>
+      <td>0.001468</td>
+      <td>0.001834</td>
+      <td>-0.002065</td>
+      <td>-0.002878</td>
+      <td>-0.000818</td>
+      <td>0.027292</td>
+      <td>0.013613</td>
+      <td>0.003315</td>
+      <td>0.001719</td>
+      <td>...</td>
+      <td>-0.004165</td>
+      <td>0.000701</td>
+      <td>0.006415</td>
+      <td>0.003062</td>
+      <td>0.008700</td>
+      <td>0.002000</td>
+      <td>0.022605</td>
+      <td>0.009142</td>
+      <td>0.020000</td>
+      <td>0.002667</td>
+    </tr>
+    <tr>
+      <th>2023-12-27 00:00:00-05:00</th>
+      <td>0.005827</td>
+      <td>0.003787</td>
+      <td>0.005127</td>
+      <td>0.001682</td>
+      <td>0.001104</td>
+      <td>-0.003644</td>
+      <td>0.018548</td>
+      <td>-0.004132</td>
+      <td>0.002325</td>
+      <td>0.000072</td>
+      <td>...</td>
+      <td>0.000878</td>
+      <td>0.003464</td>
+      <td>-0.004066</td>
+      <td>-0.003078</td>
+      <td>0.006689</td>
+      <td>0.004453</td>
+      <td>0.001053</td>
+      <td>-0.002388</td>
+      <td>-0.008244</td>
+      <td>0.007161</td>
+    </tr>
+    <tr>
+      <th>2023-12-28 00:00:00-05:00</th>
+      <td>0.008736</td>
+      <td>0.000974</td>
+      <td>0.005556</td>
+      <td>-0.000839</td>
+      <td>-0.006303</td>
+      <td>-0.000939</td>
+      <td>0.018416</td>
+      <td>0.003631</td>
+      <td>0.002442</td>
+      <td>-0.000358</td>
+      <td>...</td>
+      <td>0.003606</td>
+      <td>-0.005052</td>
+      <td>0.012468</td>
+      <td>0.005687</td>
+      <td>-0.000525</td>
+      <td>-0.002446</td>
+      <td>-0.001595</td>
+      <td>0.004128</td>
+      <td>0.003370</td>
+      <td>0.001321</td>
+    </tr>
+    <tr>
+      <th>2023-12-29 00:00:00-05:00</th>
+      <td>-0.003373</td>
+      <td>0.002432</td>
+      <td>-0.002989</td>
+      <td>0.001422</td>
+      <td>-0.001934</td>
+      <td>0.001813</td>
+      <td>-0.009075</td>
+      <td>-0.005168</td>
+      <td>0.004750</td>
+      <td>-0.003612</td>
+      <td>...</td>
+      <td>0.007856</td>
+      <td>0.001922</td>
+      <td>-0.007084</td>
+      <td>0.000323</td>
+      <td>0.000350</td>
+      <td>0.001073</td>
+      <td>-0.007336</td>
+      <td>0.000576</td>
+      <td>-0.017689</td>
+      <td>0.001065</td>
+    </tr>
+  </tbody>
+</table>
+<p>752 rows × 499 columns</p>
+</div></div></div>
+</div>
+<p>Now we shall set up a multilevel dataframe, with companies and sectors as levels</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">drop_cols</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tickers_list</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">returns_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">drop_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">drop_cols</span>
+
+<span class="n">companies_new</span> <span class="o">=</span> <span class="n">companies</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">companies</span><span class="p">[</span><span class="n">companies</span><span class="p">[</span><span class="s2">&quot;Symbol&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">drop_cols</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;GICS Sector&quot;</span><span class="p">)</span>
+
+<span class="n">tuples</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">companies_new</span><span class="p">[</span><span class="s1">&#39;GICS Sector&#39;</span><span class="p">],</span><span class="n">companies_new</span><span class="p">[</span><span class="s1">&#39;Symbol&#39;</span><span class="p">]))</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GICS Sector&quot;</span><span class="p">,</span> <span class="s2">&quot;Symbol&quot;</span><span class="p">])</span>
+
+<span class="n">returns_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span>
+<span class="n">returns_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>GICS Sector</th>
+      <th colspan="10" halign="left">Communication Services</th>
+      <th>...</th>
+      <th colspan="10" halign="left">Utilities</th>
+    </tr>
+    <tr>
+      <th>Symbol</th>
+      <th>TMUS</th>
+      <th>IPG</th>
+      <th>META</th>
+      <th>EA</th>
+      <th>NFLX</th>
+      <th>MTCH</th>
+      <th>TTWO</th>
+      <th>NWSA</th>
+      <th>T</th>
+      <th>NWS</th>
+      <th>...</th>
+      <th>LNT</th>
+      <th>EXC</th>
+      <th>PEG</th>
+      <th>AEE</th>
+      <th>AEP</th>
+      <th>AWK</th>
+      <th>FE</th>
+      <th>SO</th>
+      <th>PCG</th>
+      <th>SRE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-01-05 00:00:00-05:00</th>
+      <td>-0.001687</td>
+      <td>0.006491</td>
+      <td>0.012373</td>
+      <td>0.010341</td>
+      <td>0.005693</td>
+      <td>0.000721</td>
+      <td>0.005092</td>
+      <td>0.033563</td>
+      <td>0.001621</td>
+      <td>0.008176</td>
+      <td>...</td>
+      <td>-0.008346</td>
+      <td>0.002895</td>
+      <td>0.030776</td>
+      <td>-0.009747</td>
+      <td>-0.001204</td>
+      <td>0.000095</td>
+      <td>0.006453</td>
+      <td>0.017302</td>
+      <td>0.015840</td>
+      <td>0.006969</td>
+    </tr>
+    <tr>
+      <th>2021-01-06 00:00:00-05:00</th>
+      <td>0.015212</td>
+      <td>0.034457</td>
+      <td>-0.002082</td>
+      <td>-0.008638</td>
+      <td>0.010933</td>
+      <td>-0.039902</td>
+      <td>-0.026302</td>
+      <td>0.039966</td>
+      <td>0.038604</td>
+      <td>0.027422</td>
+      <td>...</td>
+      <td>0.008416</td>
+      <td>0.005850</td>
+      <td>0.005990</td>
+      <td>0.022147</td>
+      <td>0.042181</td>
+      <td>0.005481</td>
+      <td>0.037444</td>
+      <td>0.028496</td>
+      <td>0.112359</td>
+      <td>0.014691</td>
+    </tr>
+    <tr>
+      <th>2021-01-07 00:00:00-05:00</th>
+      <td>-0.025662</td>
+      <td>0.012291</td>
+      <td>0.009707</td>
+      <td>0.010703</td>
+      <td>0.009435</td>
+      <td>0.024512</td>
+      <td>0.053471</td>
+      <td>-0.010008</td>
+      <td>-0.005564</td>
+      <td>0.026609</td>
+      <td>...</td>
+      <td>0.007609</td>
+      <td>0.007150</td>
+      <td>-0.009923</td>
+      <td>-0.019561</td>
+      <td>0.045389</td>
+      <td>-0.007612</td>
+      <td>0.036168</td>
+      <td>-0.005928</td>
+      <td>0.030509</td>
+      <td>-0.000897</td>
+    </tr>
+    <tr>
+      <th>2021-01-08 00:00:00-05:00</th>
+      <td>-0.018265</td>
+      <td>-0.011790</td>
+      <td>0.002785</td>
+      <td>0.005248</td>
+      <td>0.003647</td>
+      <td>0.015406</td>
+      <td>-0.006095</td>
+      <td>0.027901</td>
+      <td>-0.004252</td>
+      <td>0.007134</td>
+      <td>...</td>
+      <td>-0.007844</td>
+      <td>-0.008325</td>
+      <td>-0.006560</td>
+      <td>0.009208</td>
+      <td>-0.010140</td>
+      <td>0.014678</td>
+      <td>-0.008873</td>
+      <td>-0.002197</td>
+      <td>-0.025405</td>
+      <td>0.006647</td>
+    </tr>
+    <tr>
+      <th>2021-01-11 00:00:00-05:00</th>
+      <td>-0.008522</td>
+      <td>0.013177</td>
+      <td>-0.006899</td>
+      <td>0.016314</td>
+      <td>-0.014423</td>
+      <td>-0.022387</td>
+      <td>0.028230</td>
+      <td>0.001574</td>
+      <td>0.000450</td>
+      <td>0.008579</td>
+      <td>...</td>
+      <td>-0.021656</td>
+      <td>-0.012529</td>
+      <td>-0.009172</td>
+      <td>-0.020681</td>
+      <td>-0.012665</td>
+      <td>0.004853</td>
+      <td>0.020519</td>
+      <td>0.000315</td>
+      <td>0.023604</td>
+      <td>0.007614</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2023-12-22 00:00:00-05:00</th>
+      <td>0.007294</td>
+      <td>0.002084</td>
+      <td>0.005070</td>
+      <td>0.015401</td>
+      <td>0.016344</td>
+      <td>-0.002316</td>
+      <td>-0.002216</td>
+      <td>0.013263</td>
+      <td>0.002955</td>
+      <td>0.004534</td>
+      <td>...</td>
+      <td>0.007300</td>
+      <td>0.004624</td>
+      <td>-0.003307</td>
+      <td>0.008614</td>
+      <td>0.008506</td>
+      <td>0.000154</td>
+      <td>0.015454</td>
+      <td>0.007605</td>
+      <td>0.008712</td>
+      <td>0.001644</td>
+    </tr>
+    <tr>
+      <th>2023-12-26 00:00:00-05:00</th>
+      <td>0.016740</td>
+      <td>0.001468</td>
+      <td>0.001834</td>
+      <td>-0.002065</td>
+      <td>-0.002878</td>
+      <td>-0.000818</td>
+      <td>0.027292</td>
+      <td>0.013613</td>
+      <td>0.003315</td>
+      <td>0.001719</td>
+      <td>...</td>
+      <td>-0.004165</td>
+      <td>0.000701</td>
+      <td>0.006415</td>
+      <td>0.003062</td>
+      <td>0.008700</td>
+      <td>0.002000</td>
+      <td>0.022605</td>
+      <td>0.009142</td>
+      <td>0.020000</td>
+      <td>0.002667</td>
+    </tr>
+    <tr>
+      <th>2023-12-27 00:00:00-05:00</th>
+      <td>0.005827</td>
+      <td>0.003787</td>
+      <td>0.005127</td>
+      <td>0.001682</td>
+      <td>0.001104</td>
+      <td>-0.003644</td>
+      <td>0.018548</td>
+      <td>-0.004132</td>
+      <td>0.002325</td>
+      <td>0.000072</td>
+      <td>...</td>
+      <td>0.000878</td>
+      <td>0.003464</td>
+      <td>-0.004066</td>
+      <td>-0.003078</td>
+      <td>0.006689</td>
+      <td>0.004453</td>
+      <td>0.001053</td>
+      <td>-0.002388</td>
+      <td>-0.008244</td>
+      <td>0.007161</td>
+    </tr>
+    <tr>
+      <th>2023-12-28 00:00:00-05:00</th>
+      <td>0.008736</td>
+      <td>0.000974</td>
+      <td>0.005556</td>
+      <td>-0.000839</td>
+      <td>-0.006303</td>
+      <td>-0.000939</td>
+      <td>0.018416</td>
+      <td>0.003631</td>
+      <td>0.002442</td>
+      <td>-0.000358</td>
+      <td>...</td>
+      <td>0.003606</td>
+      <td>-0.005052</td>
+      <td>0.012468</td>
+      <td>0.005687</td>
+      <td>-0.000525</td>
+      <td>-0.002446</td>
+      <td>-0.001595</td>
+      <td>0.004128</td>
+      <td>0.003370</td>
+      <td>0.001321</td>
+    </tr>
+    <tr>
+      <th>2023-12-29 00:00:00-05:00</th>
+      <td>-0.003373</td>
+      <td>0.002432</td>
+      <td>-0.002989</td>
+      <td>0.001422</td>
+      <td>-0.001934</td>
+      <td>0.001813</td>
+      <td>-0.009075</td>
+      <td>-0.005168</td>
+      <td>0.004750</td>
+      <td>-0.003612</td>
+      <td>...</td>
+      <td>0.007856</td>
+      <td>0.001922</td>
+      <td>-0.007084</td>
+      <td>0.000323</td>
+      <td>0.000350</td>
+      <td>0.001073</td>
+      <td>-0.007336</td>
+      <td>0.000576</td>
+      <td>-0.017689</td>
+      <td>0.001065</td>
+    </tr>
+  </tbody>
+</table>
+<p>752 rows × 499 columns</p>
+</div></div></div>
+</div>
+<p>Recall the CAPM model for how companies’ returns can be predicted by the market factor. We can estimate a CAPM model for each of the companies, therefore obtaining a market beta for every single company, or we could group them all together, obtaining a single beta for the whole S&amp;P500.</p>
+<p>This last approach would be redundant, as our predictor variable (SPY) is already the returns for the S&amp;P 500. In this case we would obtain an alpha very close to zero and a beta very close to 1. This approach, however, could be valid for a subset of the S&amp;P 500 stocks.</p>
+<p>Or we could use the information that stocks are grouped into sectors and try to use the CAPM to estimate sector betas. We have already introduced Bayesian multilevel modelling, an approach that could be useful in this.</p>
+<section id="noncentered-parametrization-for-multilevel-models">
+<h3>Noncentered parametrization for multilevel models<a class="headerlink" href="#noncentered-parametrization-for-multilevel-models" title="Permalink to this heading">#</a></h3>
+<p>Before jumping into our model, we also need to introduce one more aspect of Bayesian multilevel models: centered and noncentered parametrizations. A centered parametrization would be the intuitive way to specify a multilevel model. A simple centered multilevel model could look like</p>
+<p><span class="math notranslate nohighlight">\(\mu \sim N(0,1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\sigma \sim HalfCauchy(1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_j \sim N(\mu,\sigma^2)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(y_{i,j} \sim N(\beta_j x_{i,j}, 1)\)</span>.</p>
+<p>An MCMC sample might have trouble here because <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\beta_j\)</span> can be correlated, so the sampler has issues exploring the parameter space. Ben Lambert gives a good overview of the problem here: <a class="reference external" href="https://www.youtube.com/watch?v=gSd1msFFZTw">https://www.youtube.com/watch?v=gSd1msFFZTw</a></p>
+<p>We can improve things by using a noncentered parametrization, which would look like</p>
+<p><span class="math notranslate nohighlight">\(\mu \sim N(0,1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\sigma \sim HalfCauchy(1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(Z_j \sim N(0,1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_j = \mu + \sigma Z_j\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(y_{i,j} \sim N(\beta_j x_{i,j}, 1)\)</span>.</p>
+<p>The difference is mathematically subtle, but can have a lot of difference computationally. From probability theory we know how to standardize a normal distribution, and what we do here can be viewed as the reverse: instead of subtracting the mean and dividing by the standard deviation in order to obtain the standard normal, we start from the standard normal, multiply by the SD and add the mean to obtain our normally distributed variable. It turns out that, for the fact that <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(Z_j\)</span> are uncorrelated, the sampler has a much easier time exploring the parameter space. For a more thorough explanation see: <a class="reference external" href="https://twiecki.io/blog/2014/03/17/bayesian-glms-3/">https://twiecki.io/blog/2014/03/17/bayesian-glms-3/</a></p>
+<p>Now let’s specify our multilevel CAPM with sectors as clusters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sector_list</span> <span class="o">=</span> <span class="n">companies_new</span><span class="p">[</span><span class="s2">&quot;GICS Sector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">n_sectors</span> <span class="o">=</span> <span class="n">companies_new</span><span class="p">[</span><span class="s2">&quot;GICS Sector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+<span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spy_ret</span><span class="p">)</span>
+
+<span class="n">sector_idxs</span><span class="p">,</span> <span class="n">sectors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">companies_new</span><span class="p">[</span><span class="s2">&quot;GICS Sector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sector&quot;</span><span class="p">:</span> <span class="n">sectors</span><span class="p">,</span>
+    <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sector_idxs</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">hierarchical_capm</span><span class="p">:</span>
+    
+    <span class="n">sector_idx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;sector_idx&quot;</span><span class="p">,</span> <span class="n">sector_idxs</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">,</span> <span class="n">mutable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+   
+    <span class="n">mu_alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;mu_alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">)</span>
+    <span class="n">sigma_alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_alpha&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu_beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;mu_beta&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">)</span>
+    <span class="n">sigma_beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_beta&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># centered:</span>
+    <span class="c1"># alpha = pm.Normal(&quot;alpha&quot;, mu_alpha, sigma_alpha, dims=&quot;sector&quot;)</span>
+    <span class="c1"># noncentered:</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="n">mu_alpha</span> <span class="o">+</span> <span class="n">sigma_alpha</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;z_alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">n_sectors</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;sector&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># centered:</span>
+    <span class="c1"># beta = pm.Normal(&quot;beta&quot;, mu_beta, sigma_beta, dims=&quot;sector&quot;)</span>
+    <span class="c1"># noncentered:</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;beta&quot;</span><span class="p">,</span> <span class="n">mu_beta</span> <span class="o">+</span> <span class="n">sigma_beta</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;z_beta&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">n_sectors</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;sector&quot;</span><span class="p">)</span>
+
+    <span class="n">error</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">stock_return</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">sector_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">beta</span><span class="p">[</span><span class="n">sector_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">spy_ret</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;likelihood&#39;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">stock_return</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">error</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">returns_df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">hierarchical_capm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c835711cd6ea5114b3a9bef624e2533db0b2f83b287e114027451a131b0c1508.svg" src="_images/c835711cd6ea5114b3a9bef624e2533db0b2f83b287e114027451a131b0c1508.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">hierarchical_capm</span><span class="p">:</span>
+    <span class="n">trace_hcapm</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (2 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [mu_alpha, sigma_alpha, mu_beta, sigma_beta, z_alpha, z_beta, error]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='6000' class='' max='6000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [6000/6000 1:13:18<00:00 Sampling 2 chains, 4 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 2 chains for 1_000 tune and 2_000 draw iterations (2_000 + 4_000 draws total) took 4406 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We recommend running at least 4 chains for robust computation of convergence diagnostics
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_hcapm</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~z_alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;~z_beta&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;mu_alpha&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;mu_alpha&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;mu_beta&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;mu_beta&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sigma_alpha&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_alpha&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sigma_beta&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_beta&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;error&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;error&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;alpha&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;alpha&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;beta&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;beta&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/c219d3084c25c18b460047ec68256faccc9349fcb7e57b2affaa147fcbe1a3ef.png" src="_images/c219d3084c25c18b460047ec68256faccc9349fcb7e57b2affaa147fcbe1a3ef.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_density</span><span class="p">(</span><span class="n">trace_hcapm</span><span class="p">,</span><span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">],</span><span class="n">shade</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/00f70deec5499997fb83c27e38599387c2577aa36bf7aae926fc5eddc94ca093.png" src="_images/00f70deec5499997fb83c27e38599387c2577aa36bf7aae926fc5eddc94ca093.png" />
+</div>
+</div>
+<p>These posteriors for the market betas can give us an idea of which sectors are more or less sensitive to the market.</p>
+</section>
+</section>
+<section id="regularization-methods-for-multifactor-models">
+<h2>Regularization methods for multifactor models<a class="headerlink" href="#regularization-methods-for-multifactor-models" title="Permalink to this heading">#</a></h2>
+<p>Going back to the multifactor models for the cross section of stock returns, such as the Fama-French 3 factor, Carhart 4 factor or APT models, we can try to evaluate the usefulness of each covariate in predicting stock returns. Nowadays, financial institutions might dispose of dozens, even hundreds of possible covariates for predicting returns. A linear model with too many variables, however, might lead to spurious relationships and/or overfitting. This is the problem known in machine learning as “feature selection”.</p>
+<p>Regularization methods are a way of solving this. Methods such as LASSO or ridge regression add a penalty to the regression function, “shrinking” coefficients towards zero. The purpose of this is so that more coefficients will equal zero, and less covariates will be deemed useful in predicting future observations.</p>
+<p>We already went through the fact that, in Bayesian inference, regularization can be imposed via prior distributions. This comes handy in the estimation of Bayesian factor models, especially with many covariates.</p>
+<p>In an article from 2015, Fama and French augment their traditional 3 factor model with two additional factors: profitability and investment. The “profitability” factor (RMW) stands for the premium for companies with robust profit margins minus weak profit margins. The “investment” factor (CMA) refers to companies’ investment strategies regarding assets, and captures the premium for investing in companies with conservative investing minus aggressive ones.</p>
+<p>We also include Carhart’s momentum factor (MOM) and two factors proposed by researchers at AQR Capital Management, BAB and QMJ. Quality minus junk (QMJ), as presented by Asness, Frazzini and Pedersen, seeks to quantify the premium for investing in stocks with better quality measures, such as profitability, growth and safety, versus worse (“junk”) ones.</p>
+<p>Betting against beta (BAB), presented by Frazzini and Pedersen, is based on a real-world deviation from CAPM predictions. The CAPM predicts that investors will divide their wealth between the risk-free rate and the market portfolio, and their risk preferences will dictate how much they will allocate between both, or even borrow at the risk-free rate to leverage themselves at the market portfolio, for risk-loving agents. In reality, there is a restriction to how much agents can borrow and leverage themselves, so risk-lovers who want more leverage end up buying assets with high market beta, which makes assets with low market betas cheaper. The BAB factor captures the premium for investing in low market beta assets, therefore “betting against beta”.</p>
+<p>Frazzini, Kabiller and Pedersen (<a class="reference external" href="https://www.tandfonline.com/doi/full/10.2469/faj.v74.n4.3">https://www.tandfonline.com/doi/full/10.2469/faj.v74.n4.3</a>) find that including QMJ and BAB as additional factors in the traditional 4 factor (market, SMB, HML and momentum) model reduces the annualized alpha obtained by Berkshire Hathaway from 5.3% to 0.3% for the period between 1976 and 2011. See <a class="reference external" href="https://www8.gsb.columbia.edu/valueinvesting/sites/valueinvesting/files/14%20-%20Summary%20of%20%20%27Buffett%27s%20Alpha%27.pdf">https://www8.gsb.columbia.edu/valueinvesting/sites/valueinvesting/files/14 - Summary of  ‘Buffett’s Alpha’.pdf</a> for a summary</p>
+<p>As for macroeconomic variables, we include CPI inflation (12-month), industrial capacity utilization, GDP growth, returns on 3 month T-bill rates, the term spread (10 year minus 3 month Treasury rates) and the economic policy uncertainty index by Baker, Bloom and Davis (<a class="reference external" href="https://www.policyuncertainty.com/index.html">https://www.policyuncertainty.com/index.html</a>). We use the three component index and scale it dividing the values by 100.</p>
+<p>Our variables shall have daily frequency. We shall use linear interpolation to convert variables that do not have daily frequency. All variables that are percentages are quoted in absolute values e.g. an inflation of 2% appears as 2 and not as 0.02.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ff5f</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ff5f</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ff5f</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ff5f</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Mkt-RF</th>
+      <th>SMB</th>
+      <th>HML</th>
+      <th>RMW</th>
+      <th>CMA</th>
+      <th>RF</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-11-24</th>
+      <td>0.11</td>
+      <td>0.62</td>
+      <td>0.19</td>
+      <td>-0.51</td>
+      <td>0.24</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <th>2023-11-27</th>
+      <td>-0.23</td>
+      <td>-0.14</td>
+      <td>-0.08</td>
+      <td>0.12</td>
+      <td>-0.25</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <th>2023-11-28</th>
+      <td>0.06</td>
+      <td>-0.30</td>
+      <td>0.05</td>
+      <td>-0.17</td>
+      <td>0.02</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <th>2023-11-29</th>
+      <td>0.01</td>
+      <td>0.58</td>
+      <td>0.69</td>
+      <td>-0.78</td>
+      <td>-0.06</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <th>2023-11-30</th>
+      <td>0.35</td>
+      <td>-0.41</td>
+      <td>0.01</td>
+      <td>-0.11</td>
+      <td>0.19</td>
+      <td>0.021</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mom</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+<span class="n">mom</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">mom</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mom</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MOM&quot;</span><span class="p">]</span>
+
+<span class="n">qmj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Quality-Minus-Junk-Factors-Daily.xlsx&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="s2">&quot;A,Y&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">qmj</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">qmj</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">)</span>
+<span class="n">qmj</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QMJ&quot;</span><span class="p">]</span>
+
+<span class="n">bab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Betting-Against-Beta-Equity-Factors-Daily.xlsx&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="s2">&quot;A,Y&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">bab</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">bab</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">)</span>
+<span class="n">bab</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BAB&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpi_infl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://api.db.nomics.world/v22/series/BLS/cu/CUSR0000SA0.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">12</span><span class="p">)[</span><span class="s2">&quot;2010-01-01&quot;</span><span class="p">:]</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">cpi_infl</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cpi_infl</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y-%m&quot;</span><span class="p">)</span>
+<span class="n">cpi_infl</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CPI inflation&quot;</span><span class="p">]</span>
+<span class="n">cpi_infl</span> <span class="o">=</span> <span class="n">cpi_infl</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+
+<span class="n">cap_util</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://api.db.nomics.world/v22/series/FED/G17_CAPUTL/CAPUTL.B50001.S.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+<span class="n">cap_util</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cap_util</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">cap_util</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Capacity utilization&quot;</span><span class="p">]</span>
+<span class="n">cap_util</span> <span class="o">=</span> <span class="n">cap_util</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+
+<span class="n">gdp_growth</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://api.db.nomics.world/v22/series/BEA/GDPbyIndustry-15/II-Q.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">gdp_growth</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">gdp_growth</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">()</span>
+<span class="n">gdp_growth</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GDP growth&quot;</span><span class="p">]</span>
+<span class="n">gdp_growth</span> <span class="o">=</span> <span class="n">gdp_growth</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+
+<span class="n">irx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">((</span><span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;^IRX&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;3 month T-bill&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">irx</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">irx</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;https://www.policyuncertainty.com/media/US_Policy_Uncertainty_Data.xlsx&quot;</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uncertainty</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">uncertainty</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">uncertainty</span><span class="p">[</span><span class="s1">&#39;Month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y-%m&quot;</span><span class="p">)</span>
+<span class="n">uncertainty</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">uncertainty</span><span class="p">[</span><span class="s2">&quot;Three_Component_Index&quot;</span><span class="p">])</span>
+<span class="n">uncertainty</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Uncertainty index&quot;</span><span class="p">]</span>
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span>
+
+<span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
+<span class="n">term_spread</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_fred</span><span class="p">(</span><span class="s1">&#39;T10Y3M&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+<span class="n">term_spread</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">term_spread</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">term_spread</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Term spread&quot;</span><span class="p">]</span>
+<span class="n">term_spread</span> <span class="o">=</span> <span class="n">term_spread</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_date</span> <span class="o">=</span> <span class="s2">&quot;2020-06-01&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2023-01-01&quot;</span>
+
+<span class="n">factors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">ff5f</span><span class="p">,</span><span class="n">mom</span><span class="p">,</span><span class="n">qmj</span><span class="p">,</span><span class="n">bab</span><span class="p">,</span><span class="n">cpi_infl</span><span class="p">,</span><span class="n">cap_util</span><span class="p">,</span><span class="n">gdp_growth</span><span class="p">,</span><span class="n">irx</span><span class="p">,</span><span class="n">term_spread</span><span class="p">,</span><span class="n">uncertainty</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">factors</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">start_date</span><span class="p">:</span><span class="n">end_date</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">factors</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">subplots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;],
+       [&lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;],
+       [&lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;, &lt;Axes: &gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/014c08e90fc9e0c77ec4f2ecf5389f166f7d6e85b6d27e0fd7701502ca1f1730.png" src="_images/014c08e90fc9e0c77ec4f2ecf5389f166f7d6e85b6d27e0fd7701502ca1f1730.png" />
+</div>
+</div>
+<p>We shall start with a linear model for the returns of JPMorgan Equity Premium Income ETF (JEPI), one of the top actively managed ETFs in terms of market capitalization</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+
+<span class="n">jepi</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;JEPI&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;2020-05-29&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;JEPI&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">jepi</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">jepi</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">jepi</span> <span class="o">=</span> <span class="p">(</span><span class="n">jepi</span> <span class="o">-</span> <span class="n">factors</span><span class="p">[</span><span class="s2">&quot;RF&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">jepi</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span> <span class="c1"># add_constant so that our model has an intercept</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.815
+Model:                            OLS   Adj. R-squared:                  0.811
+Method:                 Least Squares   F-statistic:                     201.2
+Date:                Sun, 14 Jan 2024   Prob (F-statistic):          4.28e-223
+Time:                        13:07:50   Log-Likelihood:                -181.33
+No. Observations:                 653   AIC:                             392.7
+Df Residuals:                     638   BIC:                             459.9
+Df Model:                          14                                         
+Covariance Type:            nonrobust                                         
+========================================================================================
+                           coef    std err          t      P&gt;|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+const                   -5.4902      3.582     -1.533      0.126     -12.523       1.543
+Mkt-RF                   0.6018      0.013     47.243      0.000       0.577       0.627
+SMB                     -0.0468      0.022     -2.142      0.033      -0.090      -0.004
+HML                      0.0365      0.019      1.899      0.058      -0.001       0.074
+RMW                     -0.0147      0.035     -0.414      0.679      -0.084       0.055
+CMA                      0.0806      0.033      2.406      0.016       0.015       0.146
+MOM                     -0.0540      0.012     -4.505      0.000      -0.078      -0.030
+QMJ                      0.1816      0.035      5.173      0.000       0.113       0.251
+BAB                      0.1682      0.019      8.724      0.000       0.130       0.206
+CPI inflation            0.0015      0.013      0.118      0.906      -0.024       0.027
+Capacity utilization     1.2517      0.823      1.521      0.129      -0.364       2.867
+GDP growth               0.0265      0.018      1.501      0.134      -0.008       0.061
+3 month T-bill          -0.0082      0.031     -0.263      0.793      -0.069       0.053
+Term spread             -0.0440      0.052     -0.851      0.395      -0.145       0.057
+Uncertainty index        0.0084      0.045      0.186      0.852      -0.080       0.097
+==============================================================================
+Omnibus:                       31.075   Durbin-Watson:                   2.001
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               61.635
+Skew:                           0.293   Prob(JB):                     4.13e-14
+Kurtosis:                       4.386   Cond. No.                     2.32e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.32e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Apparently the market, SMB, CMA, MOM, QMJ and BAB factor all do a very good job of explaining JEPI returns.</p>
+<p>Let’s try non-Bayesian regularization and feature selection techniques via scikit-learn. We’ll start with a ridge regression:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">jepi</span><span class="p">)</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.54e-01, -1.03e-02, -1.15e-02,  2.51e-02, -7.10e-03, -1.99e-02,
+       -1.90e-03,  2.47e-02, -2.30e-03,  2.00e-04,  8.50e-03,  3.30e-03,
+       -4.10e-03, -7.00e-04])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The parameter <span class="math notranslate nohighlight">\(\alpha\)</span> controls the strength of our regularization. We set it to <span class="math notranslate nohighlight">\(\alpha = 1000\)</span> as an example. The case where <span class="math notranslate nohighlight">\(\alpha = 0\)</span> is the standard linear regression.</p>
+<p>We can reproduce the example from scikit-learn’s user guide (<a class="reference external" href="https://scikit-learn.org/stable/auto_examples/feature_selection/plot_select_from_model_diabetes.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py">https://scikit-learn.org/stable/auto_examples/feature_selection/plot_select_from_model_diabetes.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py</a>) and find feature importance via ridge cross-validation. We must also pay attention to the scale of our variables before interpreting the coefficients. First we take a loot at the standard deviation of the covariates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">height</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span> <span class="n">x</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;BarContainer object of 15 artists&gt;
+</pre></div>
+</div>
+<img alt="_images/3321fef1e85824ae63d77a0f3dcf324cec71da94810d6f9620be46242e70169d.png" src="_images/3321fef1e85824ae63d77a0f3dcf324cec71da94810d6f9620be46242e70169d.png" />
+</div>
+</div>
+<p>They have SD values around the same range. Now we try ridge CV:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">RidgeCV</span>
+
+<span class="n">ridge</span> <span class="o">=</span> <span class="n">RidgeCV</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">jepi</span><span class="p">)</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ridge</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="n">importance</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Feature importances via coefficients&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dd3465798b131ef577c125ef569a48722bd58f0115f5aac168e6d28c8435bdf1.png" src="_images/dd3465798b131ef577c125ef569a48722bd58f0115f5aac168e6d28c8435bdf1.png" />
+</div>
+</div>
+<p>In this case, the market factor, QMJ and BAB are the most important variables in explaining JEPI returns throughout the period.</p>
+<p>It turns out the ridge regression penalty can be imposed in the Bayesian framework. This would be equivalent to giving the regression coefficients a normal prior distribution. In this case, the standard deviation of the prior would control the strength of the regularization.</p>
+<p>Let’s try it out:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">bayes_ridge</span><span class="p">:</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Coefficients&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">beta</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;likelihood&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">jepi</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">bayes_ridge</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6fea905b2b3149c639c87dcb271291ee727b6940ba830146ad8a0b7c289d9b5d.svg" src="_images/6fea905b2b3149c639c87dcb271291ee727b6940ba830146ad8a0b7c289d9b5d.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">bayes_ridge</span><span class="p">:</span>
+    <span class="n">trace_ridge</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [Intercept, Coefficients, sigma]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 00:22<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 36 seconds.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace_ridge</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>0.049</td>
+      <td>0.009</td>
+      <td>0.032</td>
+      <td>0.066</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>28500.0</td>
+      <td>17451.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Mkt-RF]</th>
+      <td>0.496</td>
+      <td>0.022</td>
+      <td>0.455</td>
+      <td>0.538</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36544.0</td>
+      <td>15070.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[SMB]</th>
+      <td>0.039</td>
+      <td>0.036</td>
+      <td>-0.027</td>
+      <td>0.106</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36061.0</td>
+      <td>13938.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[HML]</th>
+      <td>-0.094</td>
+      <td>0.022</td>
+      <td>-0.135</td>
+      <td>-0.053</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>34610.0</td>
+      <td>15261.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[RMW]</th>
+      <td>-0.033</td>
+      <td>0.037</td>
+      <td>-0.101</td>
+      <td>0.038</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36804.0</td>
+      <td>15468.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[CMA]</th>
+      <td>-0.234</td>
+      <td>0.044</td>
+      <td>-0.316</td>
+      <td>-0.154</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>38432.0</td>
+      <td>14762.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[MOM]</th>
+      <td>-0.063</td>
+      <td>0.018</td>
+      <td>-0.098</td>
+      <td>-0.030</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36161.0</td>
+      <td>14784.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[QMJ]</th>
+      <td>-0.175</td>
+      <td>0.032</td>
+      <td>-0.236</td>
+      <td>-0.115</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>34403.0</td>
+      <td>14505.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[BAB]</th>
+      <td>-0.019</td>
+      <td>0.028</td>
+      <td>-0.070</td>
+      <td>0.036</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>35914.0</td>
+      <td>14723.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[CPI inflation]</th>
+      <td>-0.004</td>
+      <td>0.005</td>
+      <td>-0.013</td>
+      <td>0.005</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>33762.0</td>
+      <td>16496.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Capacity utilization]</th>
+      <td>-0.001</td>
+      <td>0.007</td>
+      <td>-0.013</td>
+      <td>0.013</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>34522.0</td>
+      <td>16938.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[GDP growth]</th>
+      <td>0.005</td>
+      <td>0.009</td>
+      <td>-0.011</td>
+      <td>0.022</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>35526.0</td>
+      <td>15881.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[3 month T-bill]</th>
+      <td>-0.009</td>
+      <td>0.019</td>
+      <td>-0.044</td>
+      <td>0.026</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>34009.0</td>
+      <td>15575.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Term spread]</th>
+      <td>-0.013</td>
+      <td>0.024</td>
+      <td>-0.058</td>
+      <td>0.032</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36957.0</td>
+      <td>16144.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Uncertainty index]</th>
+      <td>0.002</td>
+      <td>0.017</td>
+      <td>-0.029</td>
+      <td>0.033</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>35767.0</td>
+      <td>16419.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>sigma</th>
+      <td>0.721</td>
+      <td>0.005</td>
+      <td>0.711</td>
+      <td>0.731</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>34828.0</td>
+      <td>14805.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Other than imposing the ridge or LASSO via coefficient priors, we have other Bayesian regularization options.</p>
+<p>The spike and slab regression is a common Bayesian variable selection technique. Spike and slab priors can be expressed as a mixture of a discrete distribution that will assign zero to some coefficients (the spike) and a continuous distribution with a larger variance (the slab), which would not be much restrictive of the values the non-zero coefficients can assume.</p>
+<p>The spike and slab can be written as a mixture of normal distributions. The strength of the regularization can be controlled through the hyperparameters for the spike and the slab components.</p>
+<p>An example of regression model with a spike and slab prior for <span class="math notranslate nohighlight">\(p= 1, \ldots, P\)</span> possible covariates could be written as</p>
+<p><span class="math notranslate nohighlight">\(\pi \sim Beta(2,4)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\gamma_p \sim Ber(\pi)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\sigma_{feature} \sim HalfCauchy(1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_r \sim N(0, \sigma^2_{feature})\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_s \sim N(0, 0.000001)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_p = \gamma_p \beta_{r} + (1-\gamma_p) \beta_{s} \)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\alpha \sim N(0, 1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\sigma_{obs} \sim HalfCauchy(b)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(Y_i \sim N(\alpha + (\gamma_p'\beta_p)' X_i, \sigma^2_{obs})\)</span>.</p>
+<p>As the Bernoulli distribution is discrete, it cannot be sampled via NUTS algorithm. PyMC then uses the Metropolis algorithm, which is slower and may require more burn-in steps for tuning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">ss_model</span><span class="p">:</span>
+    
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s2">&quot;pi&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pi</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    <span class="n">sd_feature</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sd_feature&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">mix_sd</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">switch</span><span class="p">(</span><span class="n">gamma</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">sd_feature</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+    
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Coefficients&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">mix_sd</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_obs&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;likelihood&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">jepi</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">ss_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a2419c10a642f190136fac725478966dba4fd2275c7613167f0719282b044def.svg" src="_images/a2419c10a642f190136fac725478966dba4fd2275c7613167f0719282b044def.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">ss_model</span><span class="p">:</span>
+    <span class="n">trace_ss</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CompoundStep
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;NUTS: [pi, sd_feature, Coefficients, Intercept, sigma_obs]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;BinaryGibbsMetropolis: [gamma]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 02:37<00:00 Sampling 4 chains, 29 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 171 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arviz\stats\diagnostics.py:592: RuntimeWarning: invalid value encountered in scalar divide
+  (between_chain_variance / within_chain_variance + num_samples - 1) / (num_samples)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There were 29 divergences after tuning. Increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_ss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;gamma&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;gamma&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;Coefficients&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Coefficients&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;Intercept&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Intercept&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;pi&#39;}&gt;, &lt;Axes: title={&#39;center&#39;: &#39;pi&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sd_feature&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sd_feature&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sigma_obs&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_obs&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/5538ff987fff38cbd71bf2210d87e83d39d7061ad85eb13090aa5e6455f52021.png" src="_images/5538ff987fff38cbd71bf2210d87e83d39d7061ad85eb13090aa5e6455f52021.png" />
+</div>
+</div>
+<p>Another type of prior distribution well-suited for shrinkage and variable selection are global-local priors. These priors consist of two components: one global, that shrinks all coefficients towards zero, and one local for each covariate, that will allow the largest coefficients to escape zero.</p>
+<p>One famous example of global-local prior is the horseshoe prior. The original horseshoe prior (<a class="reference external" href="http://proceedings.mlr.press/v5/carvalho09a/carvalho09a.pdf">http://proceedings.mlr.press/v5/carvalho09a/carvalho09a.pdf</a>) is a mixture of two half-Cauchy distributions for each local plus the global components.</p>
+<p>Another version called regularized horseshoe (<a class="reference external" href="https://arxiv.org/pdf/1707.01694.pdf">https://arxiv.org/pdf/1707.01694.pdf</a>) combines elements of the original horseshoe and the spike and slab. The regularized horseshoe imposes regularization on both small and large coefficients. As the regularized horseshoe is relatively new, the best ways to implement it are current subject of research, and NUTS sampling can result in some divergent transitions (<a class="reference external" href="https://discourse.mc-stan.org/t/divergent-transitions-with-the-horseshoe-prior/1651/2">https://discourse.mc-stan.org/t/divergent-transitions-with-the-horseshoe-prior/1651/2</a>).</p>
+<p>A model with the original horseshoe prior for <span class="math notranslate nohighlight">\(p = 1, \ldots, P\)</span> possible covariates can look like</p>
+<p><span class="math notranslate nohighlight">\(\tau_0 = \frac{p_0}{P-p_0}\sigma_{obs}\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\tau \sim HalfNormal(\tau_0^2)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\lambda_p \sim HalfCauchy(1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_p \sim N(0, \lambda_p^2 \tau^2)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\alpha \sim N(0, 1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(Y_i \sim N(\alpha + \beta_p' X_i, \sigma^2_{obs})\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(p_0\)</span> is our initial guess for the number of nonzero coefficients (we set it to 7), the hyperparameter of the <span class="math notranslate nohighlight">\(\lambda_p\)</span> components are scaled by the standard deviation of the observed variables and <span class="math notranslate nohighlight">\(\sigma_{obs}\)</span> is fixed and set to <span class="math notranslate nohighlight">\(0.01\)</span>. We also use the noncentered parametrization for hierarchical models.</p>
+<p>There are many techniques for the global shrinkage parameter <span class="math notranslate nohighlight">\(\tau\)</span>. We follow Piironen and Vehtari (2017) in specifying it as a function of <span class="math notranslate nohighlight">\(\tau_0\)</span>, and then use <span class="math notranslate nohighlight">\(\tau_0\)</span> as the standard deviation of a half-normal prior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">hs_model</span><span class="p">:</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">tau0</span> <span class="o">=</span> <span class="p">(</span><span class="n">p0</span><span class="o">/</span><span class="p">(</span><span class="n">D</span><span class="o">-</span><span class="n">p0</span><span class="p">))</span><span class="o">*</span><span class="n">obs_noise</span>
+    
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s2">&quot;tau&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">tau0</span><span class="p">)</span>
+    <span class="n">lamb</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s1">&#39;lambda&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;Coefficients&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span><span class="n">lamb</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_obs&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;likelihood&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">jepi</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">hs_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ed1c240727d1a1dcc2a0a2acc26e2ef546bff4f1db7e2049dcf51f7133f2bc2c.svg" src="_images/ed1c240727d1a1dcc2a0a2acc26e2ef546bff4f1db7e2049dcf51f7133f2bc2c.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">hs_model</span><span class="p">:</span>
+    <span class="n">trace_hs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [tau, lambda, z, Intercept, sigma_obs]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='32000' class='' max='32000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [32000/32000 10:52<00:00 Sampling 4 chains, 745 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 3_000 tune and 5_000 draw iterations (12_000 + 20_000 draws total) took 665 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There were 745 divergences after tuning. Increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_hs</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;~z&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;Intercept&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Intercept&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;tau&#39;}&gt;, &lt;Axes: title={&#39;center&#39;: &#39;tau&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;lambda&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;lambda&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sigma_obs&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_obs&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;Coefficients&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Coefficients&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/cb61f25415fcc6e12c559ed7858465d5a43da90e83fbc0ac1d8f26f0487fff22.png" src="_images/cb61f25415fcc6e12c559ed7858465d5a43da90e83fbc0ac1d8f26f0487fff22.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace_hs</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~z&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>0.048</td>
+      <td>0.008</td>
+      <td>0.032</td>
+      <td>0.064</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>15041.0</td>
+      <td>11402.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>tau</th>
+      <td>0.015</td>
+      <td>0.006</td>
+      <td>0.005</td>
+      <td>0.026</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>5842.0</td>
+      <td>8561.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[Mkt-RF]</th>
+      <td>42.482</td>
+      <td>40.792</td>
+      <td>5.391</td>
+      <td>108.900</td>
+      <td>0.813</td>
+      <td>0.575</td>
+      <td>3073.0</td>
+      <td>2828.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[SMB]</th>
+      <td>1.925</td>
+      <td>3.822</td>
+      <td>0.000</td>
+      <td>5.656</td>
+      <td>0.032</td>
+      <td>0.023</td>
+      <td>7782.0</td>
+      <td>7288.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[HML]</th>
+      <td>7.779</td>
+      <td>11.577</td>
+      <td>0.272</td>
+      <td>20.281</td>
+      <td>0.132</td>
+      <td>0.093</td>
+      <td>7241.0</td>
+      <td>9371.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[RMW]</th>
+      <td>1.862</td>
+      <td>3.451</td>
+      <td>0.000</td>
+      <td>5.453</td>
+      <td>0.030</td>
+      <td>0.021</td>
+      <td>11095.0</td>
+      <td>7815.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[CMA]</th>
+      <td>20.922</td>
+      <td>34.134</td>
+      <td>1.609</td>
+      <td>53.419</td>
+      <td>0.513</td>
+      <td>0.416</td>
+      <td>2227.0</td>
+      <td>791.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[MOM]</th>
+      <td>4.567</td>
+      <td>6.360</td>
+      <td>0.004</td>
+      <td>12.148</td>
+      <td>0.073</td>
+      <td>0.051</td>
+      <td>5585.0</td>
+      <td>5463.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[QMJ]</th>
+      <td>15.297</td>
+      <td>22.194</td>
+      <td>1.660</td>
+      <td>38.584</td>
+      <td>0.249</td>
+      <td>0.176</td>
+      <td>5544.0</td>
+      <td>9434.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[BAB]</th>
+      <td>1.377</td>
+      <td>2.962</td>
+      <td>0.000</td>
+      <td>3.936</td>
+      <td>0.026</td>
+      <td>0.019</td>
+      <td>7497.0</td>
+      <td>2816.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[CPI inflation]</th>
+      <td>0.370</td>
+      <td>0.627</td>
+      <td>0.000</td>
+      <td>1.058</td>
+      <td>0.005</td>
+      <td>0.004</td>
+      <td>11350.0</td>
+      <td>9239.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[Capacity utilization]</th>
+      <td>7.730</td>
+      <td>15.592</td>
+      <td>0.000</td>
+      <td>28.080</td>
+      <td>1.091</td>
+      <td>0.861</td>
+      <td>1103.0</td>
+      <td>374.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[GDP growth]</th>
+      <td>0.695</td>
+      <td>1.456</td>
+      <td>0.000</td>
+      <td>1.866</td>
+      <td>0.012</td>
+      <td>0.009</td>
+      <td>8689.0</td>
+      <td>9356.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[3 month T-bill]</th>
+      <td>0.931</td>
+      <td>1.910</td>
+      <td>0.000</td>
+      <td>2.588</td>
+      <td>0.017</td>
+      <td>0.012</td>
+      <td>11521.0</td>
+      <td>8313.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[Term spread]</th>
+      <td>1.559</td>
+      <td>3.027</td>
+      <td>0.000</td>
+      <td>4.444</td>
+      <td>0.024</td>
+      <td>0.017</td>
+      <td>3025.0</td>
+      <td>8919.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>lambda[Uncertainty index]</th>
+      <td>1.865</td>
+      <td>3.497</td>
+      <td>0.000</td>
+      <td>5.300</td>
+      <td>0.030</td>
+      <td>0.021</td>
+      <td>10970.0</td>
+      <td>9245.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>sigma_obs</th>
+      <td>0.721</td>
+      <td>0.005</td>
+      <td>0.711</td>
+      <td>0.730</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>3136.0</td>
+      <td>6419.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Mkt-RF]</th>
+      <td>0.494</td>
+      <td>0.022</td>
+      <td>0.452</td>
+      <td>0.536</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>16486.0</td>
+      <td>11972.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[SMB]</th>
+      <td>0.011</td>
+      <td>0.022</td>
+      <td>-0.022</td>
+      <td>0.063</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>13987.0</td>
+      <td>16297.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[HML]</th>
+      <td>-0.081</td>
+      <td>0.025</td>
+      <td>-0.128</td>
+      <td>-0.034</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>10373.0</td>
+      <td>6372.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[RMW]</th>
+      <td>-0.008</td>
+      <td>0.021</td>
+      <td>-0.055</td>
+      <td>0.026</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>11369.0</td>
+      <td>13187.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[CMA]</th>
+      <td>-0.217</td>
+      <td>0.045</td>
+      <td>-0.300</td>
+      <td>-0.133</td>
+      <td>0.001</td>
+      <td>0.000</td>
+      <td>6372.0</td>
+      <td>11011.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[MOM]</th>
+      <td>-0.048</td>
+      <td>0.022</td>
+      <td>-0.082</td>
+      <td>0.001</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>3520.0</td>
+      <td>4024.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[QMJ]</th>
+      <td>-0.162</td>
+      <td>0.034</td>
+      <td>-0.229</td>
+      <td>-0.101</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>13109.0</td>
+      <td>9399.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[BAB]</th>
+      <td>-0.004</td>
+      <td>0.015</td>
+      <td>-0.039</td>
+      <td>0.020</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>16177.0</td>
+      <td>16747.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[CPI inflation]</th>
+      <td>-0.001</td>
+      <td>0.003</td>
+      <td>-0.009</td>
+      <td>0.004</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>9250.0</td>
+      <td>13044.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Capacity utilization]</th>
+      <td>-0.000</td>
+      <td>0.006</td>
+      <td>-0.011</td>
+      <td>0.012</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>15632.0</td>
+      <td>18324.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[GDP growth]</th>
+      <td>0.002</td>
+      <td>0.006</td>
+      <td>-0.008</td>
+      <td>0.014</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>11665.0</td>
+      <td>13787.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[3 month T-bill]</th>
+      <td>-0.002</td>
+      <td>0.010</td>
+      <td>-0.022</td>
+      <td>0.016</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>5662.0</td>
+      <td>16926.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Term spread]</th>
+      <td>-0.004</td>
+      <td>0.014</td>
+      <td>-0.035</td>
+      <td>0.021</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>16549.0</td>
+      <td>17851.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Coefficients[Uncertainty index]</th>
+      <td>0.001</td>
+      <td>0.011</td>
+      <td>-0.021</td>
+      <td>0.024</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>15134.0</td>
+      <td>16969.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The regularized horseshoe model from Piironen and Vehtari (2017) differs from the original horseshoe in that it adds an additional shrinkage component <span class="math notranslate nohighlight">\(c^2\)</span>, to which the authors assign an inverse gamma distribution.</p>
+<p>We specify the following model with the regularized horseshoe</p>
+<p><span class="math notranslate nohighlight">\(\tau_0 = \frac{p_0}{P-p_0}\sigma_{obs}\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\tau \sim HalfNormal(\tau_0^2)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\lambda_p \sim HalfCauchy(1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(c^2 \sim  InvGamma(\frac{\nu}{2}, \frac{\nu s}{2})\)</span></p>
+<p><span class="math notranslate nohighlight">\(\xi_p^2 = \frac{c^2 \lambda_p^2}{c^2 + \tau^2 \lambda_p^2}\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\beta_p \sim N(0, \tau^2 \xi^2)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\alpha \sim N(0, 1)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(Y_i \sim N(\alpha + \beta_p' X_i, \sigma^2_{obs})\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(\nu\)</span> and <span class="math notranslate nohighlight">\(s\)</span> are, respectively, the degrees of freedom and scale parameters of a scaled inverse chi-squared distribution, here parametrized as the equivalent inverse gamma distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">reg_hs_model</span><span class="p">:</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">tau0</span> <span class="o">=</span> <span class="p">(</span><span class="n">p0</span><span class="o">/</span><span class="p">(</span><span class="n">D</span><span class="o">-</span><span class="n">p0</span><span class="p">))</span><span class="o">*</span><span class="n">obs_noise</span>
+    
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s2">&quot;tau&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">tau0</span><span class="p">)</span>
+    <span class="n">lamb</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s1">&#39;lambda&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+
+    <span class="n">c_df</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">c_scale</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">c_sq</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">InverseGamma</span><span class="p">(</span><span class="s2">&quot;c_sq&quot;</span><span class="p">,</span> <span class="n">c_df</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">c_df</span> <span class="o">*</span> <span class="n">c_scale</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">c_sq</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">lamb</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)))</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;Coefficients&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span><span class="n">xi</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;likelihood&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">jepi</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">reg_hs_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/935ee4375fc87fac1274dff42ee2385173a55fee5bb740bcd36c36e7b094ad0b.svg" src="_images/935ee4375fc87fac1274dff42ee2385173a55fee5bb740bcd36c36e7b094ad0b.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">reg_hs_model</span><span class="p">:</span>
+    <span class="n">trace_rhs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [tau, lambda, c_sq, z, Intercept]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='40000' class='' max='40000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [40000/40000 58:50<00:00 Sampling 4 chains, 522 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 5_000 tune and 5_000 draw iterations (20_000 + 20_000 draws total) took 3544 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There were 522 divergences after tuning. Increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain 0 reached the maximum tree depth. Increase `max_treedepth`, increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain 1 reached the maximum tree depth. Increase `max_treedepth`, increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain 2 reached the maximum tree depth. Increase `max_treedepth`, increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain 3 reached the maximum tree depth. Increase `max_treedepth`, increase `target_accept` or reparameterize.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_rhs</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;~z&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;Intercept&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Intercept&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;tau&#39;}&gt;, &lt;Axes: title={&#39;center&#39;: &#39;tau&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;lambda&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;lambda&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;c_sq&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;c_sq&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;Coefficients&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;Coefficients&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/1f40c7a680d4fcd2c0f7c5e5d5c4b1d69bd08f631b72806e992cd9e866c59c13.png" src="_images/1f40c7a680d4fcd2c0f7c5e5d5c4b1d69bd08f631b72806e992cd9e866c59c13.png" />
+</div>
+</div>
+<p>We can estimate a Bayesian model with flat priors (that will have the same results as OLS) and compare the coefficients for each variable and all 5 regularization techniques</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">bayes_flat</span><span class="p">:</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;Coefficients&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+    
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">factors</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;RF&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">beta</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;likelihood&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">jepi</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">trace_flat</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [Intercept, Coefficients, sigma]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 00:23<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 37 seconds.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_forest</span><span class="p">([</span><span class="n">trace_ridge</span><span class="p">,</span> <span class="n">trace_flat</span><span class="p">,</span> <span class="n">trace_ss</span><span class="p">,</span> <span class="n">trace_hs</span><span class="p">,</span> <span class="n">trace_rhs</span><span class="p">],</span> <span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Ridge (normal)&quot;</span><span class="p">,</span> <span class="s2">&quot;Flat (OLS)&quot;</span><span class="p">,</span> <span class="s2">&quot;Spike and slab&quot;</span><span class="p">,</span> <span class="s2">&quot;Original HS&quot;</span><span class="p">,</span> <span class="s2">&quot;Regularized HS&quot;</span><span class="p">],</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Coefficients&quot;</span><span class="p">],</span> <span class="n">combined</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&lt;Axes: title={&#39;center&#39;: &#39;95.0% HDI&#39;}&gt;], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/e7f3962f5178d1db677f18935efad59c21ecca9f4ddd85552b11f683fd3f76ce.png" src="_images/e7f3962f5178d1db677f18935efad59c21ecca9f4ddd85552b11f683fd3f76ce.png" />
+</div>
+</div>
+</section>
+<section id="additional-references-for-this-section">
+<h2>Additional references for this section<a class="headerlink" href="#additional-references-for-this-section" title="Permalink to this heading">#</a></h2>
+<p>Rubin, Donald B. “Estimation in parallel randomized experiments.” Journal of Educational Statistics 6.4 (1981): 377-401.</p>
+<p>Piironen, Juho, and Aki Vehtari. “Sparsity information and regularization in the horseshoe and other shrinkage priors.” Electronic Journal of Statistics 11.2 (2017): 5018-5051.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="CH2.2_linear_models_bayesian.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Linear models: classic and Bayesian approaches</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="CH3_time_series.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 3: Time series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-pooling-for-the-capm">Partial pooling for the CAPM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noncentered-parametrization-for-multilevel-models">Noncentered parametrization for multilevel models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-methods-for-multifactor-models">Regularization methods for multifactor models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Martins
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  This book is available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license.
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

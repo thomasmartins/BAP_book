@@ -1,0 +1,1460 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Time series of stock prices and returns &#8212; Bayesian Methods in Asset Pricing</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CH3.1_timeseries_stockprices';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Time series modeling: classical and Bayesian approaches" href="CH3.2_bayesian_timeseries.html" />
+    <link rel="prev" title="Chapter 3: Time series" href="CH3_time_series.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="landing_intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/BAP_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/BAP_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="landing_intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH1_allocation.html">Chapter 1: Risk, return and allocation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH1.1_returns_mvo.html">Returns, risk and diversification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.2_bayes.html">Bayesian inference and computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.3_black_litterman.html">Black-Litterman model for portfolio allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH2_cross_section.html">Chapter 2: The cross section of asset returns</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH2.1_cross_section_factors.html">The cross-section of stock returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.2_linear_models_bayesian.html">Linear models: classic and Bayesian approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.3_hierarchical_bayesian_capm.html">Bayesian techniques for factor models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="CH3_time_series.html">Chapter 3: Time series</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Time series of stock prices and returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.2_bayesian_timeseries.html">Time series modeling: classical and Bayesian approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.3_ARIMA_SV_ES_VAR.html">Bayesian state space approach for nonsynchronous trading</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref_chapter.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book/issues/new?title=Issue%20on%20page%20%2FCH3.1_timeseries_stockprices.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/CH3.1_timeseries_stockprices.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Time series of stock prices and returns</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bid-ask-spread">Bid-ask spread</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinearity-in-financial-returns">Nonlinearity in financial returns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-at-risk">Value at risk</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="time-series-of-stock-prices-and-returns">
+<h1>Time series of stock prices and returns<a class="headerlink" href="#time-series-of-stock-prices-and-returns" title="Permalink to this heading">#</a></h1>
+<p>In the previous chapter, we explored the cross section of stock returns, a type of data that treats observations of a same variable as independent of each other, and seeks to measure correlation or dependence between different variables.</p>
+<p>Now we shall take a look at the other type of stock return data we mentioned, time series data. A time series consists of the observation of a variable indexed along time. For example, the price of a certain stock across time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">yfinance</span> <span class="k">as</span> <span class="nn">yf</span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_date</span> <span class="o">=</span> <span class="s2">&quot;2011-01-01&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2019-01-01&quot;</span>
+
+<span class="n">csco</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;CSCO&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">csco</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f280a62c50&gt;]
+</pre></div>
+</div>
+<img alt="_images/c8fcfc44232583f4e5b6f1524eddf8bc997025e5d61a6e8fce70ea33380d79d4.png" src="_images/c8fcfc44232583f4e5b6f1524eddf8bc997025e5d61a6e8fce70ea33380d79d4.png" />
+</div>
+</div>
+<p>The percent variation in price, known as returns, can also form a time series</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csco_ret</span> <span class="o">=</span> <span class="n">csco</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">csco_ret</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Date&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/65050f67069d2ae031fdc31b3200b1767420aaf2bd587ea3f07cec501dcbdd79.png" src="_images/65050f67069d2ae031fdc31b3200b1767420aaf2bd587ea3f07cec501dcbdd79.png" />
+</div>
+</div>
+<p>The key about time series data is that the observation for a current time period may or may not depend on past observations. This property is known as autocorrelation. First, we need a theoretical introduction to what does this mean.</p>
+<p>Multiple observations of a random variable along time are known as stochastic processes. Let’s start with a simple exercise: you start at position 0, and flip a coin. If you get heads, you move +1 and if you get tails, you move -1. Mathematically, our “coin flip” can be seen as a Bernoulli random variable with <span class="math notranslate nohighlight">\(p = 0.5\)</span>. Let’s imagine for our Bernoulli RV that “1” corresponds to heads and “0” corresponds to tails.</p>
+<p>Now let’s flip the coin and find out</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">rw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">rw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rw</span><span class="p">,</span> <span class="n">rw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f280c50a00&gt;]
+</pre></div>
+</div>
+<img alt="_images/6d674fc474d62571dea8864e9b9ebca852de9a15398738473612306363531591.png" src="_images/6d674fc474d62571dea8864e9b9ebca852de9a15398738473612306363531591.png" />
+</div>
+</div>
+<p>We get heads and move 1.</p>
+<p>Now, starting from our new position, let’s flip the coin again. Since we’re at 1, if we get heads we now go to 2 or, if we get tails, we go back to 0. Let’s find out</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rw</span><span class="p">,</span> <span class="n">rw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f282618190&gt;]
+</pre></div>
+</div>
+<img alt="_images/b28efa5b9c7e4cfd6ca69d5829cabfa1dd69b779e3477adff8191ae78147f3ba.png" src="_images/b28efa5b9c7e4cfd6ca69d5829cabfa1dd69b779e3477adff8191ae78147f3ba.png" />
+</div>
+</div>
+<p>After two flips, we’re at 2. Now, let’s try 50 coin flips in succession and see what happens.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">52</span><span class="p">):</span>
+    <span class="n">rw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rw</span><span class="p">,</span> <span class="n">rw</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f28261bdc0&gt;]
+</pre></div>
+</div>
+<img alt="_images/f922c4f04cfd46463f623b685b02bca60dd7253237b23da8ccbf027f8d1b9bf3.png" src="_images/f922c4f04cfd46463f623b685b02bca60dd7253237b23da8ccbf027f8d1b9bf3.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rw</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0,  1,  2,  1,  0,  1,  2,  3,  4,  5,  4,  3,  4,  3,  4,  5,  4,
+        3,  4,  3,  2,  1,  2,  1,  0,  1,  0, -1, -2, -1, -2, -3, -4, -3,
+       -2, -1,  0,  1,  0, -1, -2, -1,  0,  1,  2,  3,  4,  3,  4,  5,  4,
+        3,  4])
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is nothing more than an example of a random walk, one of the most important stochastic processes. Random walks can be also refered to as “Brownian motions” because of their discovery by bothanist Robert Brown in 1827, which noted that grains of pollen inside water followed a similar type of movement. In 1905, Albert Einstein provided a mathematical description of Brownian motion and used the concept to argue for the existence of atoms, claiming that the movement that we got to observe as “random” was in fact caused by the particles bumping into even smaller particles (atoms). Five years earlier, in 1900, French mathematician Louis Bachelier also provided a mathematical description of Brownian motions in the context of stock prices, giving birth to the field of mathematical finance.</p>
+<p>A random walk is an example of a stochatic process with the presence of autocorrelation, as current observations are dependent on past ones. We can see that the price of a stock “looks like” a random walk, whereas the returns do not.</p>
+<p>A random walk has very two important properties: it is a martingale and it follows the Markov property.</p>
+<p>A martingale is a process where the conditional expectation for the next value is equal to the present value, and does not depend on any values before that. For the random walk that starts at 0, if we simulate a very large number of steps we should expect the last step to be near 0.</p>
+<p>The Markov property means that all predictions for future values of a process only depend on its current value, meaning all previous values before the current one are useless in making predictions.</p>
+<p>The two might seem similar, but a process can be only a martingale, only Markov, both or none. The random walk with independent increments is both.</p>
+<p>Let’s simulate a very large number of steps for the random walk:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">52</span><span class="p">,</span> <span class="mi">10000</span><span class="p">):</span>
+    <span class="n">rw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rw</span><span class="p">,</span> <span class="n">rw</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f2814d11e0&gt;]
+</pre></div>
+</div>
+<img alt="_images/9ab3d2be117a0e8b908a7ad9cf70ee359abd6542adbf913c11f10426beb25395.png" src="_images/9ab3d2be117a0e8b908a7ad9cf70ee359abd6542adbf913c11f10426beb25395.png" />
+</div>
+</div>
+<p>The random walk is centrally related to another central concept in finance, the efficient markets hypothesis (EMH). A market being efficient means that all relevant information about assets are already taken into account for the determination of its current price. If there’s no way we can use the available information in order to make <em>deterministic</em> predictions, that means all innovations in price are <em>random</em>, i.e., the price follows a random walk.</p>
+<p>Another process worth mentioning is the geometric Brownian motion (GBM). The GBM is famous for its role in the Black-Scholes model for option pricing, which assumes the price of a stock follow a GBM. This, in turn, makes it so that the returns follow a Brownian motion with drift.</p>
+<p>Let’s try to first simulate the returns from a normal distribution, and see what the price looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">returns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">returns</span><span class="p">)):</span>
+    <span class="n">returns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">+</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">price</span> <span class="o">=</span> <span class="n">p0</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">returns</span><span class="p">)</span><span class="o">.</span><span class="n">cumprod</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Prices (GBM)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Log prices (RW with drift)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">price</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Returns (IID normal)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7a70dcd1a5c7540f767fa4dfdac0a1506f08a628cb1342a37271b7e498f1a93a.png" src="_images/7a70dcd1a5c7540f767fa4dfdac0a1506f08a628cb1342a37271b7e498f1a93a.png" />
+<img alt="_images/31bdc689bb294337f00df68296aeb6033451e633e5b2bb6074df7474c5cd1f63.png" src="_images/31bdc689bb294337f00df68296aeb6033451e633e5b2bb6074df7474c5cd1f63.png" />
+<img alt="_images/4bb35acab8a5c94d352013f9771d6964ae35324daca74255b0489a4031b95a19.png" src="_images/4bb35acab8a5c94d352013f9771d6964ae35324daca74255b0489a4031b95a19.png" />
+</div>
+</div>
+<p>Campbell, Lo and MacKinlay (1996) cite three types of random walk tests for stock returns. The first type assumes independent and identically distributed (IID) increments, the second has independent increments and the third has uncorrelated increments. We will calculate the Cowles-Jones (CJ) ratio, a statistical test for the first type.</p>
+<p>The CJ ratio is a ratio of <em>sequences</em> and <em>reversals</em>, where a sequence is when consecutive returns have the same sign and reversals when consecutive returns have opposite signs. If the log prices follow a random walk, and, the increments (returns) are IID with a symmetric distribution (e.g. normal), the probability of observing a sequence or a reversal is the same, and the CJ ratio tends to 1.</p>
+<p>If the probability of a positive return is <span class="math notranslate nohighlight">\(\pi\)</span>, and a negative return has probability <span class="math notranslate nohighlight">\((1-\pi)\)</span>, then the probability of a sequence is <span class="math notranslate nohighlight">\(\pi_s = \pi^2 + (1-\pi)^2\)</span> and the number of sequences <span class="math notranslate nohighlight">\(N_s\)</span> is a binomial random variable with probability <span class="math notranslate nohighlight">\(\pi_s\)</span> and size <span class="math notranslate nohighlight">\(n\)</span>, in case we have a sample of <span class="math notranslate nohighlight">\(n+1\)</span> returns. Then the observed CJ ratio takes the form of <span class="math notranslate nohighlight">\(\frac{N_s}{n-N_s}\)</span>.</p>
+<p>As the CJ ratio is a function of the binomial random variable <span class="math notranslate nohighlight">\(N_s\)</span>, the delta method can be used in order to obtain the asymptotic distribution of the CJ ratio:</p>
+<p><span class="math notranslate nohighlight">\(\widehat{CJ} \xrightarrow{a} N\bigg(\frac{\pi_s}{1-\pi_s}, \frac{\pi_s(1-\pi_s) + 2(\pi^3+(1-\pi)^3- \pi_s^2)}{n(1-\pi_s)^4}\bigg)\)</span>,</p>
+<p>and the null hypothesis is that our series follows a random walk, i.e., <span class="math notranslate nohighlight">\(\pi = \frac{1}{2}\)</span>.</p>
+<p>In practice, it is the case that most of the “random walks” observed on the stock market have a drift term. The drift is responsible for introducing a deterministic trend on the process. For example, if our prices follow a GBM, the logarithm of the price shall follow a random walk with drift. For the CJ ratio, the presence of a non-null drift means that the probability of observing a sequece is larger than that of observing a reversal, and therefore the CJ ratio is greater than 1.</p>
+<p>The probability <span class="math notranslate nohighlight">\(\pi\)</span> can be estimated directly from the sample, and, if the observed test statistic (the CJ ratio) falls inside or outside a certain critical region of the distribution under the null, the hypothesis of a random walk can be rejected or not. We denote the observed value <span class="math notranslate nohighlight">\(\pi\)</span> in our sample as <span class="math notranslate nohighlight">\(\hat{\pi}\)</span>.</p>
+<p>Denoting the estimated mean and variance of the CJ ratio, i.e., the mean and variace obtained by plugging the observed <span class="math notranslate nohighlight">\(\hat{\pi}\)</span> for <span class="math notranslate nohighlight">\(\pi\)</span>, as <span class="math notranslate nohighlight">\(\hat{\mu}_{CJ}\)</span> and <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{CJ}\)</span>, we can obtain a test statistic <span class="math notranslate nohighlight">\(\tau_{CJ} = \sqrt{n}\bigg(\frac{\widehat{CJ} - \hat{\mu}_{CJ}}{\hat{\sigma}_{CJ}}\bigg)\)</span> which we can compare with a standard normal distribution, not needing to assume <span class="math notranslate nohighlight">\(\pi = \frac{1}{2}\)</span>. See: <a class="reference external" href="https://obl20.com/wp-content/uploads/2019/04/topic1pt2-2.pdf">https://obl20.com/wp-content/uploads/2019/04/topic1pt2-2.pdf</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csco_returns</span> <span class="o">=</span> <span class="n">csco</span><span class="p">[</span><span class="mi">400</span><span class="p">:</span><span class="mi">430</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">positive_returns</span> <span class="o">=</span> <span class="n">csco_returns</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">pi_est</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">positive_returns</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">csco_returns</span><span class="p">)</span>
+<span class="n">pi_s_est</span> <span class="o">=</span> <span class="n">pi_est</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">N_s</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positive_returns</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">positive_returns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">positive_returns</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">N_s</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">positive_returns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">positive_returns</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">N_s</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+<span class="n">obs_CJ_ratio</span> <span class="o">=</span> <span class="n">N_s</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positive_returns</span><span class="p">)</span><span class="o">-</span><span class="n">N_s</span><span class="p">)</span>
+
+<span class="n">CJ_mean</span> <span class="o">=</span> <span class="n">pi_s_est</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi_s_est</span><span class="p">)</span>
+<span class="n">CJ_var</span> <span class="o">=</span> <span class="p">((</span><span class="n">pi_s_est</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi_s_est</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">pi_est</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi_est</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">pi_s_est</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positive_returns</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi_s_est</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">tau_CJ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positive_returns</span><span class="p">))</span> <span class="o">*</span> <span class="p">((</span><span class="n">obs_CJ_ratio</span> <span class="o">-</span> <span class="n">CJ_mean</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">CJ_var</span><span class="p">))</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Standard normal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1.96</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">1e-2</span><span class="p">),</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1.96</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">1e-2</span><span class="p">)),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Critical region $\alpha=0.05$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">tau_CJ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$\tau_</span><span class="si">{CJ}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\AppData\Local\Temp\ipykernel_22016\706613306.py:8: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if (positive_returns[i] == True) and (positive_returns[i+1] == True):
+C:\Users\USUARIO\AppData\Local\Temp\ipykernel_22016\706613306.py:10: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  elif (positive_returns[i] == False) and (positive_returns[i+1] == False):
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1f2815c58d0&gt;
+</pre></div>
+</div>
+<img alt="_images/872cd8293733855967f178f954a5ed13e0fa2f3c8e869f653eee320bc9555d66.png" src="_images/872cd8293733855967f178f954a5ed13e0fa2f3c8e869f653eee320bc9555d66.png" />
+</div>
+</div>
+<p>Closely related to random walk tests, unit root tests are a way of detecting nonstationarity in time series. A random walk is one example of a unit root process.</p>
+<p>Common tests for unit root include the augmented Dickey-Fuller (ADF) or KPSS tests. For the ADF, the null hypothesis is the presence of a unit root, while for the KPSS the null is stationarity (and the alternative is a unit root).</p>
+<p>Series of asset prices can be tested for unit roots. We shall apply the ADF and KPSS tests to the price of CSCO. In both tests we shall include a constant and a deterministic trend. For the ADF test we shall test</p>
+<p><span class="math notranslate nohighlight">\(\Delta y_{t} = \alpha + \gamma y_{t-1} + \sum_{p=1}^{d} \delta_p \Delta y_{t-p} + \varepsilon_t\)</span>,</p>
+<p>where the null hypothesis corresponds to <span class="math notranslate nohighlight">\(\gamma = 1\)</span>. For the KPSS, we have</p>
+<p><span class="math notranslate nohighlight">\(y_t = \alpha + \beta t + r_t + \varepsilon_t\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(r_t = r_{t-1} + u_t\)</span>,</p>
+<p>where the null is that <span class="math notranslate nohighlight">\(r_t = 0\)</span>.</p>
+<p>There is the possibility that the ADF and KPSS tests have “conflicting” results, i.e., one detects a unit root where the other doesn’t, but that’s because they’re in fact testing different things. If the ADF detects a unit root but the KPSS doesn’t, that means the series is trend stationary, whereas if the KPSS detects a unit root but the ADF doesn’t, the series is difference stationary. We can make a trend stationary series into stationary by removing the trend, and make a difference stationary series into a stationary by taking the first difference.</p>
+<p>Both tests are implemented in the statsmodels library. See: <a class="reference external" href="https://www.statsmodels.org/stable/examples/notebooks/generated/stationarity_detrending_adf_kpss.html">https://www.statsmodels.org/stable/examples/notebooks/generated/stationarity_detrending_adf_kpss.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ADF test with constant and drift</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ADF test p-value: &quot;</span>  <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">stattools</span><span class="o">.</span><span class="n">adfuller</span><span class="p">(</span><span class="n">csco</span><span class="p">,</span> <span class="n">regression</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="c1"># KPSS test with constant and trend</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KPSS test p-value: &lt; &quot;</span>  <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">stattools</span><span class="o">.</span><span class="n">kpss</span><span class="p">(</span><span class="n">csco</span><span class="p">,</span> <span class="n">regression</span><span class="o">=</span><span class="s2">&quot;ct&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ADF test p-value: 0.9866452720933259
+KPSS test p-value: &lt; 0.01
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\AppData\Local\Temp\ipykernel_22016\2059465322.py:5: InterpolationWarning: The test statistic is outside of the range of p-values available in the
+look-up table. The actual p-value is smaller than the p-value returned.
+
+  print(&quot;KPSS test p-value: &lt; &quot;  + str(sm.tsa.stattools.kpss(csco, regression=&quot;ct&quot;)[1]))
+</pre></div>
+</div>
+</div>
+</div>
+<section id="bid-ask-spread">
+<h2>Bid-ask spread<a class="headerlink" href="#bid-ask-spread" title="Permalink to this heading">#</a></h2>
+<p>In practice, time series observations may not be evenly spaced throughout time. This can be the case of financial time series, where it can be the result of nonsynchronous trading. More advanced models for stock prices take this into account.</p>
+<p>Nonsynchronous trading in financial markets can happen for many reasons, including time zones, intraday effects (e.g. opening and closing prices) or market liquidity. For this last one, the bid-ask spread is one of the key variables in understanding how it works.</p>
+<p>The bid-ask spread is the difference between bid and ask prices for a certain asset, e.g., stock. This spread can be thought of as the price market makers charge for providing liquidity, as their ask price is higher than their bid price. The bid-ask spread represents a transaction cost, which is of great relevance as it has an impact in many models or strategies.</p>
+<p>The microstructure can be ignored for longer investment horizons (e.g. 5 years), although the impact for shorter horizons is far from negligible. The bid-ask spread may also be responsible for an effect known as the <em>bid-ask bounce</em>, which can make an impact on a stock price’s volatility and autocorrelation.</p>
+<p>Roll (1984) proposes a model for the bid-ask bounce. Assuming a stock’s fundamental price lies exactly halfway between the bid and ask prices, and, for the next period it will be traded for either the bid or the ask price, it will either stay the same or move one unit of spread up or down. It is possible to show how returns will exhibit negative autocorrelation as a consequence of this effect.</p>
+<p>For example, if the current price is the ask, the previous price was either the ask or the bid, meaning the price either moved 0 or <span class="math notranslate nohighlight">\(s\)</span>. For the next period it will either stay at the ask, moving 0, or be traded at the bid price, moving <span class="math notranslate nohighlight">\(-s\)</span>. Conversely, if the current price is the bid, the previous price was either the ask or the bid, meaning the price moved 0 or <span class="math notranslate nohighlight">\(-s\)</span>, and for the next period it will stay at the bid, moving 0, or move <span class="math notranslate nohighlight">\(s\)</span> to be traded at the ask. This makes it so that the returns exhibit negative autocorrelation, which will be larger as the spread becomes larger, with the same for the volatility.</p>
+<p>We can assume a random walk process for the fundamental price, and see the effect the bid-ask bounce has on the observed price.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fundamental</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">fundamental</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fundamental</span><span class="p">,</span> <span class="n">fundamental</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="n">spread</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">traded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">traded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fundamental</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="n">spread</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">spread</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Bid-ask bounce&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fundamental</span><span class="p">,</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fundamental&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">traded</span><span class="p">,</span> <span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Traded&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fundamental</span><span class="p">)),</span><span class="n">fundamental</span> <span class="o">-</span> <span class="n">spread</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fundamental</span> <span class="o">+</span> <span class="n">spread</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1f28294b310&gt;
+</pre></div>
+</div>
+<img alt="_images/23127fb7bddb953797635832c71e2f329984e6634284bb71fb2b6f34c2a135cb.png" src="_images/23127fb7bddb953797635832c71e2f329984e6634284bb71fb2b6f34c2a135cb.png" />
+</div>
+</div>
+</section>
+<section id="nonlinearity-in-financial-returns">
+<h2>Nonlinearity in financial returns<a class="headerlink" href="#nonlinearity-in-financial-returns" title="Permalink to this heading">#</a></h2>
+<p>So far, the models mentioned here are all linear, which means that changes in the inputs (e.g. the parameters) will cause proportional changes in the outputs (the returns).</p>
+<p>One of the main empirical properties of time series of stock returns is <em>volatility clustering</em>, which means that, usually, periods of small changes in returns are followed by more periods of small changes in returns and periods of large changes in returns are followed by periods of large changes in returns.</p>
+<p>Conditional heteroskedasticity models are statistical models that allow for volatility clustering, meaning that the variance of the returns is not constant, but a function of the squares of past error values. This is one example of nonlinearity, meaning a departure of linear assumptions present in the random walk, autoregressive or GBM models.</p>
+<p>The main models using this type of approach are ARCH and GARCH models. ARCH/GARCH may assume a constant mean or an autoregressive process for the deterministic part of the returns, but instead of assuming constant volatility (standard deviation) for the errors, it models the volatility as a function of the squares of past error values, which will cause nonlinearity in the returns. The GARCH model also includes lagged volatility terms, meant to capture dependency on past realized values.</p>
+<p>A GARCH model (usually denoted as GARCH(p,q)) with constant mean <span class="math notranslate nohighlight">\(\mu\)</span> for returns <span class="math notranslate nohighlight">\(y_t\)</span> has the form</p>
+<p><span class="math notranslate nohighlight">\(y_t = \mu + \sigma_t z_t\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\sigma^2_t = \omega + \sum_{i=1}^p \alpha_i \varepsilon^2_{t-i} + \sum_{i=1}^q \beta_i \sigma^2_{t-i}\)</span>,</p>
+<p>where the noise in returns <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> is broken as <span class="math notranslate nohighlight">\(\varepsilon_t = \sigma_t z_t\)</span> with <span class="math notranslate nohighlight">\(z_t\)</span> being a standard normal, <span class="math notranslate nohighlight">\(p\)</span> is the number of ARCH terms and <span class="math notranslate nohighlight">\(q\)</span> the number of lagged volatility terms.</p>
+<p>Another type of volatility model is stochastic volatility. Instead of assuming the volatility is a deterministic function of past error values, as in ARCH/GARCH models, SV models assume the volatility follows a stochastic process, e.g., a random walk.</p>
+<p>SV models usually assume the logarithm of the volatility is a latent process. We will introduce latent variable modelling in the next chapter, with state space models.</p>
+<p>We’ll try to estimate a GARCH(1,1) model with the arch library</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csco_returns</span> <span class="o">=</span> <span class="n">csco</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">csco_returns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f2813d3d90&gt;]
+</pre></div>
+</div>
+<img alt="_images/f1742fb6e7c3226e2e5e0a97d7e4b83ad595f18164dd1a22d0ee649778e03d52.png" src="_images/f1742fb6e7c3226e2e5e0a97d7e4b83ad595f18164dd1a22d0ee649778e03d52.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arch</span> <span class="kn">import</span> <span class="n">arch_model</span>
+
+<span class="n">garch</span> <span class="o">=</span> <span class="n">arch_model</span><span class="p">(</span><span class="n">csco_returns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">garch</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration:      1,   Func. Count:      6,   Neg. LLF: 11683.781194739926
+Iteration:      2,   Func. Count:     15,   Neg. LLF: 5318.5146182474155
+Iteration:      3,   Func. Count:     22,   Neg. LLF: 210101.91893050127
+Iteration:      4,   Func. Count:     28,   Neg. LLF: 3675.1549772020894
+Iteration:      5,   Func. Count:     34,   Neg. LLF: 117892.7231960174
+Iteration:      6,   Func. Count:     40,   Neg. LLF: 3707.223942874095
+Iteration:      7,   Func. Count:     46,   Neg. LLF: 3659.6377166402835
+Iteration:      8,   Func. Count:     52,   Neg. LLF: 3657.4940406152755
+Iteration:      9,   Func. Count:     57,   Neg. LLF: 3657.47982703892
+Iteration:     10,   Func. Count:     62,   Neg. LLF: 3657.4794667772558
+Iteration:     11,   Func. Count:     67,   Neg. LLF: 3657.479278125459
+Iteration:     12,   Func. Count:     72,   Neg. LLF: 3657.4792769117103
+Iteration:     13,   Func. Count:     76,   Neg. LLF: 3657.4792769117007
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 3657.4792769117103
+            Iterations: 13
+            Function evaluations: 76
+            Gradient evaluations: 13
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arch\univariate\base.py:1881: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if isinstance(val[pos], np.float64):
+C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arch\univariate\base.py:1882: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  converted = format_float_fixed(val[pos], *formats[i])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     Constant Mean - GARCH Model Results                      
+==============================================================================
+Dep. Variable:                  Close   R-squared:                       0.000
+Mean Model:             Constant Mean   Adj. R-squared:                  0.000
+Vol Model:                      GARCH   Log-Likelihood:               -3657.48
+Distribution:                  Normal   AIC:                           7322.96
+Method:            Maximum Likelihood   BIC:                           7345.38
+                                        No. Observations:                 2011
+Date:                Thu, Jan 11 2024   Df Residuals:                     2010
+Time:                        13:49:13   Df Model:                            1
+                                 Mean Model                                
+===========================================================================
+                 coef    std err          t      P&gt;|t|     95.0% Conf. Int.
+---------------------------------------------------------------------------
+mu             0.0631  3.636e-02      1.735  8.270e-02 [-8.171e-03,  0.134]
+                              Volatility Model                             
+===========================================================================
+                 coef    std err          t      P&gt;|t|     95.0% Conf. Int.
+---------------------------------------------------------------------------
+omega          0.1366  9.408e-02      1.452      0.146 [-4.776e-02,  0.321]
+alpha[1]       0.0694  5.430e-02      1.279      0.201 [-3.700e-02,  0.176]
+beta[1]        0.8798  7.766e-02     11.329  9.468e-30    [  0.728,  1.032]
+===========================================================================
+
+Covariance estimator: robust
+ARCHModelResult, id: 0x1f2828c9a50
+</pre></div>
+</div>
+</div>
+</div>
+<p>The results show a strong significance for the constant mean <span class="math notranslate nohighlight">\(\mu\)</span> and lagged volatility coefficient <span class="math notranslate nohighlight">\(\beta\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csco_returns</span> <span class="o">=</span> <span class="n">csco</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">csco_returns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f2828cbcd0&gt;]
+</pre></div>
+</div>
+<img alt="_images/f1742fb6e7c3226e2e5e0a97d7e4b83ad595f18164dd1a22d0ee649778e03d52.png" src="_images/f1742fb6e7c3226e2e5e0a97d7e4b83ad595f18164dd1a22d0ee649778e03d52.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arch</span> <span class="kn">import</span> <span class="n">arch_model</span>
+
+<span class="n">garch</span> <span class="o">=</span> <span class="n">arch_model</span><span class="p">(</span><span class="n">csco_returns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">garch</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration:      1,   Func. Count:      6,   Neg. LLF: 11683.781194739926
+Iteration:      2,   Func. Count:     15,   Neg. LLF: 5318.5146182474155
+Iteration:      3,   Func. Count:     22,   Neg. LLF: 210101.91893050127
+Iteration:      4,   Func. Count:     28,   Neg. LLF: 3675.1549772020894
+Iteration:      5,   Func. Count:     34,   Neg. LLF: 117892.7231960174
+Iteration:      6,   Func. Count:     40,   Neg. LLF: 3707.223942874095
+Iteration:      7,   Func. Count:     46,   Neg. LLF: 3659.6377166402835
+Iteration:      8,   Func. Count:     52,   Neg. LLF: 3657.4940406152755
+Iteration:      9,   Func. Count:     57,   Neg. LLF: 3657.47982703892
+Iteration:     10,   Func. Count:     62,   Neg. LLF: 3657.4794667772558
+Iteration:     11,   Func. Count:     67,   Neg. LLF: 3657.479278125459
+Iteration:     12,   Func. Count:     72,   Neg. LLF: 3657.4792769117103
+Iteration:     13,   Func. Count:     76,   Neg. LLF: 3657.4792769117007
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 3657.4792769117103
+            Iterations: 13
+            Function evaluations: 76
+            Gradient evaluations: 13
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arch\univariate\base.py:1881: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if isinstance(val[pos], np.float64):
+C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arch\univariate\base.py:1882: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  converted = format_float_fixed(val[pos], *formats[i])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     Constant Mean - GARCH Model Results                      
+==============================================================================
+Dep. Variable:                  Close   R-squared:                       0.000
+Mean Model:             Constant Mean   Adj. R-squared:                  0.000
+Vol Model:                      GARCH   Log-Likelihood:               -3657.48
+Distribution:                  Normal   AIC:                           7322.96
+Method:            Maximum Likelihood   BIC:                           7345.38
+                                        No. Observations:                 2011
+Date:                Thu, Jan 11 2024   Df Residuals:                     2010
+Time:                        13:49:13   Df Model:                            1
+                                 Mean Model                                
+===========================================================================
+                 coef    std err          t      P&gt;|t|     95.0% Conf. Int.
+---------------------------------------------------------------------------
+mu             0.0631  3.636e-02      1.735  8.270e-02 [-8.171e-03,  0.134]
+                              Volatility Model                             
+===========================================================================
+                 coef    std err          t      P&gt;|t|     95.0% Conf. Int.
+---------------------------------------------------------------------------
+omega          0.1366  9.408e-02      1.452      0.146 [-4.776e-02,  0.321]
+alpha[1]       0.0694  5.430e-02      1.279      0.201 [-3.700e-02,  0.176]
+beta[1]        0.8798  7.766e-02     11.329  9.468e-30    [  0.728,  1.032]
+===========================================================================
+
+Covariance estimator: robust
+ARCHModelResult, id: 0x1f280c4b250
+</pre></div>
+</div>
+</div>
+</div>
+<p>The results show a strong significance for the constant mean <span class="math notranslate nohighlight">\(\mu\)</span> and lagged volatility coefficient <span class="math notranslate nohighlight">\(\beta\)</span></p>
+</section>
+<section id="value-at-risk">
+<h2>Value at risk<a class="headerlink" href="#value-at-risk" title="Permalink to this heading">#</a></h2>
+<p>With many tools at our hands to model stock returns over time, how could we use this information to protect ourselves against extreme market swings? Or calculate the probability of worst case scenarios for returns?</p>
+<p>The most famous way of doing this is by calculating value at risk (VaR). VaR gives us the maximum expected loss for a given confidence level. For example, a VaR of 100000 USD with 95% confidence means that the maximum loss will not exceed 100000 USD, except for the 5% worst case scenarios. The VaR is calculated over a holding period, e.g., 1 year, 1 month…</p>
+<p>The VaR can be calculated for a certain stock, asset or even a diversified portfolio.</p>
+<p>There are three ways to calculate VaR: parametric, historical and Monte Carlo.</p>
+<p>The parametric method involves assuming a probability distribution for the returns (usually the normal distribution), estimating the parameters, e.g. mean and standard deviation, and then obtain the VaR as a percentile of the assumed distribution with the estimated parameters. For example: the 95% confidence level parametric VaR for the normal distribution is the 5th percentile of the normal distribution, i.e., the point of the curve for which we have a 5% probability of observing a smaller value. Due to the fact that, for a portfolio, estimating the standard deviation of the portfolio requires obtaining the variance-covariance matrix of the assets, this is also known as the variance-covariance method. This method may not work properly if the returns do not follow the assumed distribution.</p>
+<p>The historical method relies on the empirical distribution of historical returns, sorting them from worst to best and then looking at quantiles: the 95% confidence level historical VaR corresponds to the 5th percentile (in this case the value that is greater than 5% of the historical returns) of the empirical distribution. The main assumption is that the same distribution pattern observed in the past will repeat in the future, so this method tends to be less reliable with smaller samples.</p>
+<p>And finally, the Monte Carlo method also requires assuming a statistical model for the returns, and then simulating a large number of returns, from which we will obtain the VaR as a percentile. The statistical model can be a normal distribution, although in this case the VaR is more easily obtaining from the parametric method. The Monte Carlo method really shines when we assume more complex models for the returns, e.g., GARCH or stochastic volatility models, for which the parametric VaR is much more difficult to obtain.</p>
+<p>We shall give an example of VaR calculations (95% confidence and investment of $100000) with all three methods:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csco_returns</span> <span class="o">=</span> <span class="n">csco</span><span class="p">[</span><span class="mi">1800</span><span class="p">:</span><span class="mi">2100</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">csco_returns</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Date
+2018-03-01 00:00:00-05:00   -0.021884
+2018-03-02 00:00:00-05:00    0.005936
+2018-03-05 00:00:00-05:00    0.010440
+2018-03-06 00:00:00-05:00   -0.005166
+2018-03-07 00:00:00-05:00   -0.002032
+Name: Close, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">investment</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">conf_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+
+<span class="c1"># Parametric VaR</span>
+
+<span class="n">returns_mean</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">returns_vol</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">mean_inv</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">returns_mean</span><span class="p">)</span> <span class="o">*</span> <span class="n">investment</span>
+<span class="n">std_inv</span> <span class="o">=</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">investment</span>
+
+<span class="n">parametric_var</span> <span class="o">=</span> <span class="n">investment</span> <span class="o">-</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value at risk (P): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">parametric_var</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value at risk (P): $2658.25
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mean_inv</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">std_inv</span><span class="p">,</span> <span class="n">mean_inv</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">std_inv</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Parametric VaR&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">95000</span><span class="p">,</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span><span class="mf">1e2</span><span class="p">),</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">95000</span><span class="p">,</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span><span class="mf">1e2</span><span class="p">),</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$5\%$ worst case scenarios&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1f285c87cd0&gt;
+</pre></div>
+</div>
+<img alt="_images/65423b3f859943ac62e2ad90387310a0576f9e020a10922cb52ba5eaaf256ddf.png" src="_images/65423b3f859943ac62e2ad90387310a0576f9e020a10922cb52ba5eaaf256ddf.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Historical VaR</span>
+
+<span class="n">historical_var</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value at risk (H): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">historical_var</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+
+<span class="n">csco_returns</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;CSCO historical returns&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Historical VaR&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">csco_returns</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;5th percentile&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value at risk (H): $3052.16
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1f2828c92d0&gt;
+</pre></div>
+</div>
+<img alt="_images/567619fa45a8993e0ac8eadf5333e150cd1a43e849fb00b1b324339eea7f6129.png" src="_images/567619fa45a8993e0ac8eadf5333e150cd1a43e849fb00b1b324339eea7f6129.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monte Carlo VaR: normal vs Student&#39;s t (df=10)</span>
+
+<span class="n">MC_steps</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">df</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">returns_mean</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">returns_vol</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">normal_returns</span> <span class="o">=</span> <span class="n">returns_mean</span> <span class="o">+</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">MC_steps</span><span class="p">)</span>
+<span class="n">t_returns</span> <span class="o">=</span> <span class="n">returns_mean</span> <span class="o">+</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_t</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">MC_steps</span><span class="p">)</span>
+
+<span class="n">MC_var_normal</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">))</span>
+<span class="n">MC_var_t</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value at risk (MC, normal): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_var_normal</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value at risk (MC, t): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_var_t</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value at risk (MC, normal): $5408.6
+Value at risk (MC, t): $7546.09
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Monte Carlo VaR - normal vs t&quot;</span><span class="p">)</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal simulated returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;t simulated returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal 5th percentile&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;t 5th percentile&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e3990936dfd39aa9df7653eb3a94d3694d28905d44b3f83cd6f7693061aae285.png" src="_images/e3990936dfd39aa9df7653eb3a94d3694d28905d44b3f83cd6f7693061aae285.png" />
+</div>
+</div>
+<p>One of the main problems with VaR is that, as it is defined as a percentile, it does not account for the shape of the tail of the distribution. Another measure of risk known as <em>expected shortfall</em> (ES) seeks to solve this problem.</p>
+<p>As the VaR gives us the probability of observing returns lower than a given quantity, ES conditions on having observed a return lower than our quantity of interest and gives us the expected loss. This is why ES is also known as conditional VaR, or CVaR.</p>
+<p>The ES can be calculated in the same three ways as the VaR: parametric, historical and Monte Carlo. We shall now provide examples of the three:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">investment</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">conf_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+
+<span class="c1"># Parametric ES</span>
+
+<span class="n">returns_mean</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">returns_vol</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">mean_inv</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">returns_mean</span><span class="p">)</span> <span class="o">*</span> <span class="n">investment</span>
+<span class="n">std_inv</span> <span class="o">=</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">investment</span>
+
+<span class="c1"># 5th percentile</span>
+<span class="n">alpha_perc</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">)</span>
+
+<span class="n">normal_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mean_inv</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">std_inv</span><span class="p">,</span> <span class="n">mean_inv</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">std_inv</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">tail_dist</span> <span class="o">=</span> <span class="n">normal_values</span><span class="p">[</span><span class="n">normal_values</span> <span class="o">&lt;</span> <span class="n">alpha_perc</span><span class="p">]</span>
+
+<span class="n">parametric_es</span> <span class="o">=</span> <span class="n">investment</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tail_dist</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected shortfall (P): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">parametric_es</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected shortfall (P): $3756.81
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Parametric ES&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">normal_values</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">normal_values</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">95000</span><span class="p">,</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span><span class="mf">1e2</span><span class="p">),</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">95000</span><span class="p">,</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span><span class="mf">1e2</span><span class="p">),</span> <span class="n">mean_inv</span><span class="p">,</span> <span class="n">std_inv</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$5\%$ worst case scenarios&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tail_dist</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean capital given 5% worst case scenario&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1f282702b00&gt;
+</pre></div>
+</div>
+<img alt="_images/22c8a5189a105e873ebd2819c0f82fb221e5b93fa3a76c1905a7706b489c4a2b.png" src="_images/22c8a5189a105e873ebd2819c0f82fb221e5b93fa3a76c1905a7706b489c4a2b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Historical ES</span>
+
+<span class="n">hist_returns</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+<span class="n">historical_es</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">hist_returns</span><span class="p">[</span><span class="n">hist_returns</span> <span class="o">&lt;</span> <span class="n">hist_returns</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected shortfall (H): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">historical_es</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+
+<span class="n">csco_returns</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;CSCO historical returns&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Historical ES&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">hist_returns</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;5th percentile of returns (VaR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">hist_returns</span><span class="p">[</span><span class="n">hist_returns</span> <span class="o">&lt;</span> <span class="n">hist_returns</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean return given worst 5% (ES)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected shortfall (H): $3690.14
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1f285cb03a0&gt;
+</pre></div>
+</div>
+<img alt="_images/845382cd589d577a94fcccaaa9222374af969bdd1ab424205b0aea7da90de6f5.png" src="_images/845382cd589d577a94fcccaaa9222374af969bdd1ab424205b0aea7da90de6f5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monte Carlo ES</span>
+
+<span class="n">MC_steps</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">df</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">returns_mean</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">returns_vol</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">normal_returns</span> <span class="o">=</span> <span class="n">returns_mean</span> <span class="o">+</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">MC_steps</span><span class="p">)</span>
+<span class="n">t_returns</span> <span class="o">=</span> <span class="n">returns_mean</span> <span class="o">+</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_t</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">MC_steps</span><span class="p">)</span>
+
+<span class="n">MC_ES_normal</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">[</span><span class="n">normal_returns</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]))</span>
+<span class="n">MC_ES_t</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">t_returns</span><span class="p">[</span><span class="n">t_returns</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected shortfall (MC, normal): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_ES_normal</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected shortfall (MC, t): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_ES_t</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected shortfall (MC, normal): $5824.1
+Expected shortfall (MC, t): $8750.19
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Monte Carlo ES - normal vs t&quot;</span><span class="p">)</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal simulated returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;t simulated returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal 5th percentile of returns (VaR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">[</span><span class="n">normal_returns</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal mean return given worst 5% (ES)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;t 5th percentile of returns (VaR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">t_returns</span><span class="p">[</span><span class="n">t_returns</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">t_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkorange&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashdot&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;t mean return given worst 5% (ES)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cd8dca11d2391eabd9e0898dfd0158dc4ccef982e79dfd94717cf54197fa876d.png" src="_images/cd8dca11d2391eabd9e0898dfd0158dc4ccef982e79dfd94717cf54197fa876d.png" />
+</div>
+</div>
+<p>It is possible to use Monte Carlo to simulate returns according to a GARCH model, and then calculate VaR and ES. First, we fit a GARCH model to our series of returns</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">csco_returns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1f281580f70&gt;]
+</pre></div>
+</div>
+<img alt="_images/7d45e9413dd4833d0cea4c4d62db62d1708b0c7a3135f4ff02812c5860186719.png" src="_images/7d45e9413dd4833d0cea4c4d62db62d1708b0c7a3135f4ff02812c5860186719.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">garch</span> <span class="o">=</span> <span class="n">arch_model</span><span class="p">(</span><span class="n">csco_returns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">garch</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration:      1,   Func. Count:      6,   Neg. LLF: 955.9237245434853
+Iteration:      2,   Func. Count:     14,   Neg. LLF: 1576454029.9390757
+Iteration:      3,   Func. Count:     21,   Neg. LLF: 405.5684929224754
+Iteration:      4,   Func. Count:     28,   Neg. LLF: 389.3100073356293
+Iteration:      5,   Func. Count:     34,   Neg. LLF: 386.3111187820463
+Iteration:      6,   Func. Count:     39,   Neg. LLF: 386.27974063403224
+Iteration:      7,   Func. Count:     44,   Neg. LLF: 386.2766108030851
+Iteration:      8,   Func. Count:     49,   Neg. LLF: 386.2764268058654
+Iteration:      9,   Func. Count:     54,   Neg. LLF: 386.2764203397132
+Iteration:     10,   Func. Count:     58,   Neg. LLF: 386.2764203398248
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 386.2764203397132
+            Iterations: 10
+            Function evaluations: 58
+            Gradient evaluations: 10
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arch\univariate\base.py:1881: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if isinstance(val[pos], np.float64):
+C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arch\univariate\base.py:1882: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  converted = format_float_fixed(val[pos], *formats[i])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     Constant Mean - GARCH Model Results                      
+==============================================================================
+Dep. Variable:                  Close   R-squared:                       0.000
+Mean Model:             Constant Mean   Adj. R-squared:                  0.000
+Vol Model:                      GARCH   Log-Likelihood:               -386.276
+Distribution:                  Normal   AIC:                           780.553
+Method:            Maximum Likelihood   BIC:                           793.960
+                                        No. Observations:                  211
+Date:                Thu, Jan 11 2024   Df Residuals:                      210
+Time:                        13:49:20   Df Model:                            1
+                                 Mean Model                                
+===========================================================================
+                 coef    std err          t      P&gt;|t|     95.0% Conf. Int.
+---------------------------------------------------------------------------
+mu             0.1088  9.563e-02      1.138      0.255 [-7.864e-02,  0.296]
+                            Volatility Model                            
+========================================================================
+                 coef    std err          t      P&gt;|t|  95.0% Conf. Int.
+------------------------------------------------------------------------
+omega          0.3735      0.561      0.665      0.506 [ -0.727,  1.474]
+alpha[1]       0.2475      0.236      1.048      0.295 [ -0.215,  0.710]
+beta[1]        0.6247      0.410      1.522      0.128 [ -0.180,  1.429]
+========================================================================
+
+Covariance estimator: robust
+ARCHModelResult, id: 0x1f285c85e40
+</pre></div>
+</div>
+</div>
+</div>
+<p>None of our estimated parameters are significant at the 5% level, but we’ll ignore that and use the estimated parameter values for our example.</p>
+<p>Recall the GARCH model formula is</p>
+<p><span class="math notranslate nohighlight">\(y_t = \mu + \sigma_t z_t\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\sigma^2_t = \omega + \sum_{i=1}^p \alpha_i \varepsilon^2_{t-i} + \sum_{i=1}^q \beta_i \sigma^2_{t-i}\)</span>,</p>
+<p>so we’ll run the Monte Carlo according to that. Since our number of MC steps was 100000, we’ll simulate 500 GARCH processes with length 200 each:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use sample variance as sigma_0</span>
+<span class="n">sigma_0</span> <span class="o">=</span> <span class="p">(</span><span class="n">csco_returns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">eps_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span> <span class="o">*</span> <span class="n">sigma_0</span>
+
+<span class="c1"># Simulate 500 GARCH processes with length 200 each</span>
+
+<span class="n">processes</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">process_len</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">garch_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">processes</span><span class="p">,</span><span class="n">process_len</span><span class="p">))</span>
+<span class="n">returns_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">processes</span><span class="p">,</span><span class="n">process_len</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">processes</span><span class="p">):</span>
+    <span class="n">garch_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;alpha[1]&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;beta[1]&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">garch_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span>
+    <span class="n">returns_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">eps</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">processes</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">process_len</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">garch_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;alpha[1]&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;beta[1]&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">garch_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">garch_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span>
+        <span class="n">returns_sim</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">eps</span>
+
+<span class="c1"># Scaling</span>
+<span class="n">returns_sim</span> <span class="o">=</span> <span class="n">returns_sim</span><span class="o">/</span><span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then lump all of the simulated returns for each process in one distribution</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;GARCH simulated returns&quot;</span><span class="p">)</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">returns_sim</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5a2b3c9c0d75c67dcb474abe490b54b17440d1346ff7bf5abe7dbe76552e4181.png" src="_images/5a2b3c9c0d75c67dcb474abe490b54b17440d1346ff7bf5abe7dbe76552e4181.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">investment</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">conf_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">MC_steps</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">returns_mean</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">returns_vol</span> <span class="o">=</span> <span class="n">csco_returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">normal_returns</span> <span class="o">=</span> <span class="n">returns_mean</span> <span class="o">+</span> <span class="n">returns_vol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">MC_steps</span><span class="p">)</span>
+
+<span class="n">MC_var_normal</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">))</span>
+<span class="n">MC_var_GARCH</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">returns_sim</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">))</span>
+
+<span class="n">MC_ES_normal</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">[</span><span class="n">normal_returns</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]))</span>
+<span class="n">MC_ES_GARCH</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">investment</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">returns_sim</span><span class="p">[</span><span class="n">returns_sim</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">returns_sim</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value at risk (MC, normal): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_var_normal</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value at risk (MC, GARCH): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_var_GARCH</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected shortfall (MC, normal): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_ES_normal</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected shortfall (MC, GARCH): $&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MC_ES_GARCH</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value at risk (MC, normal): $5408.6
+Value at risk (MC, GARCH): $7724.47
+Expected shortfall (MC, normal): $5824.1
+Expected shortfall (MC, GARCH): $9058.31
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Monte Carlo VaR and ES - normal vs GARCH&quot;</span><span class="p">)</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal simulated returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">returns_sim</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;GARCH simulated returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal 5th percentile of returns (VaR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">[</span><span class="n">normal_returns</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">normal_returns</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal mean return given worst 5% (ES)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">returns_sim</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;GARCH 5th percentile of returns (VaR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">returns_sim</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">returns_sim</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">returns_sim</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="mi">1</span><span class="o">-</span><span class="n">conf_level</span><span class="p">)]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkorange&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashdot&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;GARCH mean return given worst 5% (ES)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ddefb3dc6a0bbfb93bd45540327daa6dff3c23e7792b9bc49f3ca9064d748b81.png" src="_images/ddefb3dc6a0bbfb93bd45540327daa6dff3c23e7792b9bc49f3ca9064d748b81.png" />
+</div>
+</div>
+<section id="additional-references-for-this-section">
+<h3>Additional references for this section<a class="headerlink" href="#additional-references-for-this-section" title="Permalink to this heading">#</a></h3>
+<p>Bodie, Z., Kane, A., Marcus, A. J. (2018). Investments. Chapter 5 details risk measures such as VaR and ES, and Chapter 11 explains random walks in the context of financial asset prices, and the EMH.</p>
+<p>MacKinlay, A. C., Lo, A. W., Campbell, J. Y. (2012). The Econometrics of Financial Markets. Chapter 2 describes random walks and tests for the random walk hypothesis, and Chapter 3 is about market microstructure. Chapter 12 describes estimation for stochastic volatility models.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="CH3_time_series.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 3: Time series</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="CH3.2_bayesian_timeseries.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Time series modeling: classical and Bayesian approaches</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bid-ask-spread">Bid-ask spread</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinearity-in-financial-returns">Nonlinearity in financial returns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-at-risk">Value at risk</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Martins
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  This book is available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license.
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

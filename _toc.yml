@@ -1,0 +1,22 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: landing_intro
+chapters:
+- file: CH1_allocation
+  sections:
+  - file: CH1.1_returns_mvo
+  - file: CH1.2_bayes
+  - file: CH1.3_black_litterman
+- file: CH2_cross_section
+  sections:
+  - file: CH2.1_cross_section_factors
+  - file: CH2.2_linear_models_bayesian
+  - file: CH2.3_hierarchical_bayesian_capm
+- file: CH3_time_series
+  sections:
+  - file: CH3.1_timeseries_stockprices
+  - file: CH3.2_bayesian_timeseries
+  - file: CH3.3_ARIMA_SV_ES_VAR
+- file: ref_chapter

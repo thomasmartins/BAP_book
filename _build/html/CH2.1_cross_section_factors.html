@@ -1,0 +1,1441 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>The cross-section of stock returns &#8212; Bayesian Methods in Asset Pricing</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CH2.1_cross_section_factors';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Linear models: classic and Bayesian approaches" href="CH2.2_linear_models_bayesian.html" />
+    <link rel="prev" title="Chapter 2: The cross section of asset returns" href="CH2_cross_section.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="landing_intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/BAP_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/BAP_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="landing_intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH1_allocation.html">Chapter 1: Risk, return and allocation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH1.1_returns_mvo.html">Returns, risk and diversification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.2_bayes.html">Bayesian inference and computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.3_black_litterman.html">Black-Litterman model for portfolio allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="CH2_cross_section.html">Chapter 2: The cross section of asset returns</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">The cross-section of stock returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.2_linear_models_bayesian.html">Linear models: classic and Bayesian approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.3_hierarchical_bayesian_capm.html">Bayesian techniques for factor models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH3_time_series.html">Chapter 3: Time series</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH3.1_timeseries_stockprices.html">Time series of stock prices and returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.2_bayesian_timeseries.html">Time series modeling: classical and Bayesian approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.3_ARIMA_SV_ES_VAR.html">Bayesian state space approach for nonsynchronous trading</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref_chapter.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book/issues/new?title=Issue%20on%20page%20%2FCH2.1_cross_section_factors.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/CH2.1_cross_section_factors.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>The cross-section of stock returns</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-asset-pricing-model">Capital Asset Pricing Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#market-portfolio-and-the-cml">Market portfolio and the CML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fama-macbeth-regressions">Fama-MacBeth regressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multifactor-models">Multifactor models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arbitrage-pricing-theory">Arbitrage Pricing Theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="the-cross-section-of-stock-returns">
+<h1>The cross-section of stock returns<a class="headerlink" href="#the-cross-section-of-stock-returns" title="Permalink to this heading">#</a></h1>
+<p>Now that we know the basics of portfolio allocation, we can take a closer look at what determines individual asset prices.</p>
+<p>Let’s start with stocks. There are two main types of data for this: time series and cross-sectional. A time series reflects how a single stock price evolves over time. A cross-section shows how prices of different assets compare with each other, in function of another variable.</p>
+<p>In this chapter our focus shall be the cross-section of stock returns.</p>
+<section id="capital-asset-pricing-model">
+<h2>Capital Asset Pricing Model<a class="headerlink" href="#capital-asset-pricing-model" title="Permalink to this heading">#</a></h2>
+<p>It is common to look at the <em>excess</em> returns, that is, returns minus the risk-free rate. This is because the risk-free rate is assumed to be the return earned on an investment free of risk. In order to earn more than the risk-free rate, investors must take up on risk.</p>
+<p>Stocks are risky assets. Cross-sectional analysis of stock returns seek to quantify how much each source of risk contributes to excess returns.</p>
+<p>One of the main sources of risk for stocks is market risk. If a stock has high market risk, that means the stock will move up or down more intensely as the market as a whole moves up or down.</p>
+<p>Market risk is the main foundation of the famous Capital Asset Pricing Model, or CAPM.</p>
+<p>CAPM consists of a linear regression of excess returns of each asset (stocks) on excess market returns. The excess return <span class="math notranslate nohighlight">\(R_i\)</span> for stock <span class="math notranslate nohighlight">\(i\)</span> over the risk-free rate <span class="math notranslate nohighlight">\(R_f\)</span> is estimated as</p>
+<p><span class="math notranslate nohighlight">\((R_i - R_f)(t) = \alpha_i + \beta_i (R_m - R_f)(t) + \varepsilon_i(t)\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(R_m\)</span> is the market return. It is common to refer to the regression intercept and coefficient as “alpha” and “beta”. The intercept, <span class="math notranslate nohighlight">\(\alpha\)</span>, corresponds to the portion of excess returns that is not explained by excess market returns. The coefficient, <span class="math notranslate nohighlight">\(\beta\)</span>, measures the sensitivity of the excess returns of a certain asset to the excess market returns.</p>
+<p>We can try to estimate a CAPM with market data. Let’s use SPY as a proxy for the American market.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">yfinance</span> <span class="k">as</span> <span class="nn">yf</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">start_date</span> <span class="o">=</span> <span class="s2">&quot;2011-01-01&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2017-01-01&quot;</span>
+
+<span class="n">spy</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;SPY&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)</span>
+
+<span class="n">spy</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Date&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/6834f680f59e750a20e77e93b87dc86291684ce28e5be3eb32b741812891aeb0.png" src="_images/6834f680f59e750a20e77e93b87dc86291684ce28e5be3eb32b741812891aeb0.png" />
+</div>
+</div>
+<p>The graph above is a time series. We need to obtain the returns, which are also a time series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spy_ret</span> <span class="o">=</span> <span class="n">spy</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">spy_ret</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Date&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/71575a1816083da25de206d07e7e2c0fb32a108d460a86fc03578224bd887087.png" src="_images/71575a1816083da25de206d07e7e2c0fb32a108d460a86fc03578224bd887087.png" />
+</div>
+</div>
+<p>Now we need data for any stock. Let’s try CSCO</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csco</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;CSCO&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)</span>
+<span class="n">csco_ret</span> <span class="o">=</span> <span class="n">csco</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">csco_ret</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Date&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/0a2f6e509493a3012eeb62409d76192fd88672745dcafc143c19452976c5ce41.png" src="_images/0a2f6e509493a3012eeb62409d76192fd88672745dcafc143c19452976c5ce41.png" />
+</div>
+</div>
+<p>We shall use the 3-month Treasury bill rates to obtain the risk-free rate of return. It is possible to get those from Yahoo finance, via the IRX index. It already is an “annualized return”, however, it is quoted as a percentage, so we divide by 100.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">risk_free</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;^IRX&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">risk_free</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Date&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/9ef8f954b24419746f54e923526c3386b755b50e7603e8794f917bbed01f6289.png" src="_images/9ef8f954b24419746f54e923526c3386b755b50e7603e8794f917bbed01f6289.png" />
+</div>
+</div>
+<p>We then obtain our excess returns and treat the time series observations of SPY and CSCO as a cross-section:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spy_excess</span> <span class="o">=</span> <span class="p">(</span><span class="n">spy_ret</span> <span class="o">-</span> <span class="n">risk_free</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">csco_excess</span> <span class="o">=</span> <span class="p">(</span><span class="n">csco_ret</span> <span class="o">-</span> <span class="n">risk_free</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">spy_excess</span><span class="p">,</span><span class="n">csco_excess</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;SPY&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;CSCO&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;CSCO&#39;)
+</pre></div>
+</div>
+<img alt="_images/65a5ea722ba780fa10dc9ef5507c9744b5362fd37609f9840b62981918a2d911.png" src="_images/65a5ea722ba780fa10dc9ef5507c9744b5362fd37609f9840b62981918a2d911.png" />
+</div>
+</div>
+<p>Now we can estimate our linear regression. We shall use the library statsmodels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">csco_excess</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">spy_excess</span><span class="p">))</span> <span class="c1"># add_constant so that our model has an intercept</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                  Close   R-squared:                       0.378
+Model:                            OLS   Adj. R-squared:                  0.378
+Method:                 Least Squares   F-statistic:                     914.9
+Date:                Thu, 11 Jan 2024   Prob (F-statistic):          2.03e-157
+Time:                        09:20:36   Log-Likelihood:                 4456.4
+No. Observations:                1507   AIC:                            -8909.
+Df Residuals:                    1505   BIC:                            -8898.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const      -7.062e-06      0.000     -0.022      0.983      -0.001       0.001
+Close          1.0332      0.034     30.248      0.000       0.966       1.100
+==============================================================================
+Omnibus:                      500.228   Durbin-Watson:                   2.024
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            91543.722
+Skew:                           0.260   Prob(JB):                         0.00
+Kurtosis:                      41.179   Cond. No.                         105.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Annualized alpha: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;const&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">252</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annualized alpha: -0.18%
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use seaborn, another graphical library, to get a scatterplot with the regression line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">spy_excess</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">csco_excess</span><span class="p">,</span> <span class="n">line_kws</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;r&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Close&#39;, ylabel=&#39;Close&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/f08a15725b3bb3f8954b07d921d651c765a66a28c0add1d0450c092b3a5961e0.png" src="_images/f08a15725b3bb3f8954b07d921d651c765a66a28c0add1d0450c092b3a5961e0.png" />
+</div>
+</div>
+<p>The red line above is our CAPM model.</p>
+<p>Now let’s try with another stock, GOOG:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">goog</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;GOOG&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">goog</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">excess</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span> <span class="o">-</span> <span class="n">risk_free</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">excess</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">spy_excess</span><span class="p">))</span> <span class="c1"># add_constant so that our model has an intercept</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                  Close   R-squared:                       0.354
+Model:                            OLS   Adj. R-squared:                  0.354
+Method:                 Least Squares   F-statistic:                     825.7
+Date:                Thu, 11 Jan 2024   Prob (F-statistic):          4.03e-145
+Time:                        09:20:38   Log-Likelihood:                 4474.9
+No. Observations:                1507   AIC:                            -8946.
+Df Residuals:                    1505   BIC:                            -8935.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0002      0.000      0.714      0.476      -0.000       0.001
+Close          0.9696      0.034     28.734      0.000       0.903       1.036
+==============================================================================
+Omnibus:                     1036.738   Durbin-Watson:                   1.955
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            90571.047
+Skew:                           2.416   Prob(JB):                         0.00
+Kurtosis:                      40.670   Cond. No.                         105.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Annualized alpha: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;const&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">252</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annualized alpha: 5.76%
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">spy_excess</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">excess</span><span class="p">,</span> <span class="n">line_kws</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;r&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Close&#39;, ylabel=&#39;Close&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/01efd55849b330f2a8269bdfdd21bc937f12e1018fb9aa9062f9a2f3b775b294.png" src="_images/01efd55849b330f2a8269bdfdd21bc937f12e1018fb9aa9062f9a2f3b775b294.png" />
+</div>
+</div>
+</section>
+<section id="market-portfolio-and-the-cml">
+<h2>Market portfolio and the CML<a class="headerlink" href="#market-portfolio-and-the-cml" title="Permalink to this heading">#</a></h2>
+<p>The CAPM may seem like a simple model, but has strong implications for theory. It gives us a better understanding of the risk-return tradeoff.</p>
+<p>With the introduction of a risk-free asset, agents now face the choice of how much to allocate between the riskless rate and risky assets. This choice ultimately depends on each investors’ risk preferences. But how to choose between risky assets?</p>
+<p>Market capitalizations of each asset implicitly contain how much the market values the asset in question. If the market perceived a certain asset as cheap, it would purchase more of it, increasing its capitalization. Conversely, if the asset were perceived to be overvalued, the market would sell more of it, decreasing market cap. So the current market capitalizations reflect market equilibrium. This idea was also used in the derivation of the Black-Litterman prior for the mean returns, <span class="math notranslate nohighlight">\(\Pi\)</span>, and deriving it via CAPM would yield similar results.</p>
+<p>The implication of the CAPM is that all investors in the market would come to a single allocation when it comes to choosing between risky assets. This allocation is called the market portfolio. In the CAPM, all investors would divide their wealth between the risk-free asset and the market portfolio.</p>
+<p>Another way to look at it is thinking about the fact that individual assets, e.g., stocks, each have idiosyncratic risk. If, by diversification, agents could get rid of the idiosyncratic risk, they would all eventually reach the market portfolio allocation in the CAPM world.</p>
+<p>The market portfolio is also called the tangency portfolio. This is due to the fact that, if we draw the risk-return tradeoff as a linear relationship on the risk-return plane, where the risk-free rate is the intercept of the return axis, this line will intersect the Markowitz efficient frontier at one point, the market portfolio. The line is known as the Capital Market Line, or CML.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;GOOG TSLA BAC KO PFE&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;2015-01-01&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span>
+
+<span class="n">market_mean_returns</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">252</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">market_cov</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">cov</span><span class="p">()</span> <span class="o">*</span> <span class="mi">252</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">port_returns</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">port_vol</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+    <span class="n">i_returns</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">@</span> <span class="n">market_mean_returns</span>
+    <span class="n">i_vol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">market_cov</span> <span class="o">@</span> <span class="n">weights</span><span class="p">))</span>    
+    <span class="n">port_returns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_returns</span><span class="p">)</span>
+    <span class="n">port_vol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_vol</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volatility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Mean Returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">port_vol</span><span class="p">,</span><span class="n">port_returns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[                       0%%                      ]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[*******************   40%%                      ]  2 of 5 completed
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[**********************60%%***                   ]  3 of 5 completed
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[**********************80%%************          ]  4 of 5 completed
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[*********************100%%**********************]  5 of 5 completed
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x1f8246f3670&gt;
+</pre></div>
+</div>
+<img alt="_images/095e394c4211c810b4e58ad49c4c7d5092db0b044eff1e9443097af1afacb720.png" src="_images/095e394c4211c810b4e58ad49c4c7d5092db0b044eff1e9443097af1afacb720.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tickers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GOOG&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">,</span> <span class="s2">&quot;BAC&quot;</span><span class="p">,</span> <span class="s2">&quot;KO&quot;</span><span class="p">,</span> <span class="s2">&quot;PFE&quot;</span><span class="p">]</span>
+<span class="n">market_caps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tickers</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">tickers</span><span class="p">)):</span>
+    <span class="n">market_caps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="n">tickers</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;marketCap&quot;</span><span class="p">]</span>
+
+<span class="n">w_mkt</span> <span class="o">=</span> <span class="n">market_caps</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">market_caps</span><span class="p">)</span>
+
+<span class="n">ret_mkt</span> <span class="o">=</span> <span class="n">w_mkt</span> <span class="o">@</span> <span class="n">market_mean_returns</span>
+<span class="n">vol_mkt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">w_mkt</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">market_cov</span> <span class="o">@</span> <span class="n">w_mkt</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">port_vol</span><span class="p">,</span><span class="n">port_returns</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vol_mkt</span><span class="p">,</span><span class="n">ret_mkt</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Real world market cap-implied market portfolio&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volatility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Mean Returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/edfbc1ec0db9eab532dbb20e3742caaf57b5b4cf10091bb3fb85b412057ce24b.png" src="_images/edfbc1ec0db9eab532dbb20e3742caaf57b5b4cf10091bb3fb85b412057ce24b.png" />
+</div>
+</div>
+<p>The fact that the market portfolio implied from real world market caps does not lie on the efficient frontier is a clear sign of the differences between the real world and the CAPM world.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">opt</span>
+
+<span class="n">risk_free</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;^IRX&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;2015-01-01&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span>
+<span class="n">mean_risk_free</span> <span class="o">=</span> <span class="n">risk_free</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">tang_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">port_returns</span><span class="p">,</span><span class="n">port_vol</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">a</span><span class="o">/</span><span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">port_returns</span><span class="p">,</span><span class="n">port_vol</span><span class="p">)]))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">port_vol</span><span class="p">,</span><span class="n">port_returns</span><span class="p">)</span>
+<span class="n">slope</span> <span class="o">=</span> <span class="n">port_vol</span><span class="p">[</span><span class="n">tang_index</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">port_returns</span><span class="p">[</span><span class="n">tang_index</span><span class="p">]</span><span class="o">-</span><span class="n">mean_risk_free</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span><span class="n">port_vol</span><span class="p">[</span><span class="n">tang_index</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">],[</span><span class="n">mean_risk_free</span><span class="p">,(</span><span class="n">port_returns</span><span class="p">[</span><span class="n">tang_index</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">mean_risk_free</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;CML&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">port_vol</span><span class="p">[</span><span class="n">tang_index</span><span class="p">],</span><span class="n">port_returns</span><span class="p">[</span><span class="n">tang_index</span><span class="p">],</span> <span class="s2">&quot;ko&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;CAPM tangency portfolio&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">mean_risk_free</span><span class="p">,</span> <span class="s2">&quot;go&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Risk-free rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volatility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Mean Returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[*********************100%%**********************]  1 of 1 completed
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="_images/49c4d06cb635259c38117342f7bbcdb3f8d3f5b288864b138b57800c428a14e4.png" src="_images/49c4d06cb635259c38117342f7bbcdb3f8d3f5b288864b138b57800c428a14e4.png" />
+</div>
+</div>
+<p>What are the risk properties of the market portfolio? That is, how does the market price risk? The market price of risk can be imagined as the extra compensation agents are willing to take for more exposure to risk. Its formula is</p>
+<p><span class="math notranslate nohighlight">\(MPR_i = \frac{\operatorname{E}[R_i] - R_f}{\sigma^2_i}\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(\operatorname{E}[R_i]\)</span> is the expected return for asset <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(\sigma^2_i\)</span> is the variance of returns, which stands for risk. The numerator is the excess return on the market portfolio and receives the name of risk premium.</p>
+<p>The market price of risk embodies the risk preferences of the market as a whole. Whenever an indivitual investor’s risk preferences diverges from the market, that investor will borrow or lend at the risk-free rate, with borrowers becoming more leveraged at the market portfolio and lenders earning more at the risk-free rate. The net borrowing of the economy shall equal zero.</p>
+<p>The MPR is also the slope of the CML we obtained in the previous step, and is related to the Sharpe ratio. The formula for the Sharpe ratio is very similar to the market price of risk, and the only difference is that the denominator of the Sharpe ratio is the standard deviation of returns, and not the variance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">port_returns</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">port_vol</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sharpe_ratio</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+    <span class="n">i_returns</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">@</span> <span class="n">market_mean_returns</span>
+    <span class="n">i_vol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">market_cov</span> <span class="o">@</span> <span class="n">weights</span><span class="p">))</span>
+    <span class="n">i_sr</span> <span class="o">=</span> <span class="n">i_returns</span><span class="o">/</span><span class="n">i_vol</span>
+    <span class="n">port_returns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_returns</span><span class="p">)</span>
+    <span class="n">port_vol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_vol</span><span class="p">)</span>
+    <span class="n">sharpe_ratio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_sr</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">port_vol</span><span class="p">,</span><span class="n">port_returns</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">sharpe_ratio</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volatility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Mean Returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Sharpe Ratio&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x1f8258a6770&gt;
+</pre></div>
+</div>
+<img alt="_images/7365a9e6c711f9497eac341a43b3d292850cd70165107c12de5bb238bea32156.png" src="_images/7365a9e6c711f9497eac341a43b3d292850cd70165107c12de5bb238bea32156.png" />
+</div>
+</div>
+</section>
+<section id="fama-macbeth-regressions">
+<h2>Fama-MacBeth regressions<a class="headerlink" href="#fama-macbeth-regressions" title="Permalink to this heading">#</a></h2>
+<p>The CAPM theoretical implications may not perfecly show themselves in practice, but they help us understand how financial markets work. To what extent does the empirical evidence support the CAPM conclusions?</p>
+<p>First of all, the true CAPM would involve knowing the true market portfolio, which would require that we took into account every single risky asset in the economy. This is impossible, in practice. Then how can we come up with an empirical test for the CAPM?</p>
+<p>We can rely on another implication of the CAPM, that the returns for different assets should be “on average” proportional to their betas. Then, with a large enough set of assets we can obtain a large enough set of betas, and from there perform tests.</p>
+<p>Fama and MacBeth (1973) designed a two-step procedure. First, we take the time series returns of each asset, turning it into a cross section, and run regressions of the asset returns versus market returns along time for each asset, so we can get an estimated beta for each asset. The second step consists of running regressions of the returns of different assets at each time period versus their betas, so we can get an estimated market price of risk at each time.</p>
+<p>In the first step we run a regression for each asset versus the market returns. In the second one, we run a regression for each period of time with the estimated betas from the first step as our independent variable.</p>
+<p>A regression for the first step for a given asset <span class="math notranslate nohighlight">\(i\)</span> would look like</p>
+<p><span class="math notranslate nohighlight">\(R_{i,t} = a_i + \beta_i M_{t} + \varepsilon_{i,t}\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(M_t\)</span> is the market return at time <span class="math notranslate nohighlight">\(t\)</span>. We would obtain a <span class="math notranslate nohighlight">\(\hat{\beta}_i\)</span> for each asset <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The second step regressions, for a given time period <span class="math notranslate nohighlight">\(t\)</span>, are of the form</p>
+<p><span class="math notranslate nohighlight">\(R_{i,t} = \lambda_t \hat{\beta}_i + \alpha_{i,t}\)</span>.</p>
+<p>In this last equation the errors <span class="math notranslate nohighlight">\(\alpha_{i,t}\)</span> have a specific interpretation: they are the portion of each asset unexplained by the factor beta. This is also known as Jensen’s alpha. The residuals <span class="math notranslate nohighlight">\(\hat{\alpha}_{i,t}\)</span> are the pricing errors according to the model.</p>
+<p>The estimate for the market price of risk over the time period for the whole sample is the average of all estimated market prices of risk along time. The estimate for the Jensen’s alpha of each asset <span class="math notranslate nohighlight">\(i\)</span> is also the average of the residuals <span class="math notranslate nohighlight">\(\hat{\alpha}_{i,t}\)</span> along time <span class="math notranslate nohighlight">\(t=1,\ldots,T\)</span>. It is worth noticing that, in the original Fama-MacBeth method, the estimates for <span class="math notranslate nohighlight">\(\lambda\)</span> are not biased, but their standard errors are.</p>
+<p>Since the estimate for <span class="math notranslate nohighlight">\(\lambda\)</span> is the average of all estimated <span class="math notranslate nohighlight">\(\lambda_t\)</span>’s over time, We can run the regression over average returns along time <span class="math notranslate nohighlight">\(\overline{R}_i\)</span> for each asset. We can also include a constant in the second step regression</p>
+<p><span class="math notranslate nohighlight">\(\overline{R}_i = \gamma + \lambda \hat{\beta}_i + u_i\)</span>.</p>
+<p>If the CAPM is valid, we can match the equation above to the theoretical CAPM equation, and therefore <span class="math notranslate nohighlight">\(\gamma\)</span> has to equal the risk-free rate and <span class="math notranslate nohighlight">\(\lambda\)</span> should match the excess return on risky assets. The Fama-MacBeth empirical test for the CAPM consists of estimating the augmented regression</p>
+<p><span class="math notranslate nohighlight">\(\overline{R}_i = \gamma + \lambda \hat{\beta}_i + \delta_1 \hat{\beta}_i^2 + \delta_2 SD_i + u_i\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(SD_i\)</span> are the standard deviations for the residuals of each asset in the first step regressions. As, according to the CAPM, the relationship between asset returns and betas is linear, and nothing other than the market risk should explain asset returns, then, if the CAPM is valid, <span class="math notranslate nohighlight">\(\delta_1\)</span> and <span class="math notranslate nohighlight">\(\delta_2\)</span> should both equal zero.</p>
+<p>Below we present an example of Fama-MacBeth regressions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tickers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv&quot;</span><span class="p">)[</span><span class="s2">&quot;Symbol&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">tickers</span><span class="p">[</span><span class="mi">401</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RVTY&quot;</span>
+<span class="n">tickers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span> <span class="n">tickers</span><span class="p">))</span>
+
+<span class="n">fmb_betas</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">spy</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;SPY&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;2021-01-01&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;2023-12-30&quot;</span><span class="p">)</span>
+<span class="n">spy_ret</span> <span class="o">=</span> <span class="n">spy</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="n">returns_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tickers</span><span class="p">:</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;2021-01-01&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;2023-12-30&quot;</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">price</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">returns_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">returns_df</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">returns_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">tickers</span>
+<span class="n">returns_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># first step</span>
+<span class="n">residuals_sd</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">returns_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">returns_df</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">spy_ret</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="n">fmb_betas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;Close&quot;</span><span class="p">])</span>
+    <span class="n">residuals_sd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">resid</span><span class="p">))</span>
+
+<span class="c1"># second step</span>
+<span class="n">lamb_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">jensens_alpha_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">returns_df</span><span class="p">)):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">returns_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fmb_betas</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="n">lamb_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">])</span>
+    <span class="n">jensens_alpha_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">jensens_alpha_df</span><span class="p">,</span><span class="n">results</span><span class="o">.</span><span class="n">resid</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#test</span>
+<span class="n">augmented_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">augmented_df</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fmb_betas</span><span class="p">)</span>
+<span class="n">augmented_df</span><span class="p">[</span><span class="s1">&#39;sq_beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fmb_betas</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">augmented_df</span><span class="p">[</span><span class="s1">&#39;sd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">residuals_sd</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">returns_df</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">augmented_df</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.022
+Model:                            OLS   Adj. R-squared:                  0.016
+Method:                 Least Squares   F-statistic:                     3.669
+Date:                Thu, 11 Jan 2024   Prob (F-statistic):             0.0123
+Time:                        09:24:39   Log-Likelihood:                 3048.0
+No. Observations:                 499   AIC:                            -6088.
+Df Residuals:                     495   BIC:                            -6071.
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0001      0.000      0.723      0.470      -0.000       0.000
+x1             0.0005      0.000      1.716      0.087   -6.92e-05       0.001
+x2            -0.0002      0.000     -1.382      0.168      -0.000     7.8e-05
+x3             0.0103      0.006      1.744      0.082      -0.001       0.022
+==============================================================================
+Omnibus:                       20.518   Durbin-Watson:                   1.865
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               52.844
+Skew:                          -0.019   Prob(JB):                     3.35e-12
+Kurtosis:                       4.594   Cond. No.                         455.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<p>In our sample, the results show that the idiosyncratic risk (i.e. the first step residuals) for each asset does not explain mean returns, as <span class="math notranslate nohighlight">\(\delta_1\)</span> (x2) is not statistically significant, but <span class="math notranslate nohighlight">\(\delta_2\)</span> (x3) is at the 10% level, meaning possible omitted factors in explaining asset returns.</p>
+</section>
+<section id="multifactor-models">
+<h2>Multifactor models<a class="headerlink" href="#multifactor-models" title="Permalink to this heading">#</a></h2>
+<p>Some empirical tests of the CAPM over the last decades reject it in favor of multifactor models. As the name implies, multifactor models rely on more than one factor in order to explain asset returns.</p>
+<p>The Fama-French 3 factor model is a current benchmark for the cross-section of stock returns. Besides the market factor, it also includes the “small minus big” and “high minus low”, or SMB and HML factors. These factors capture the systematic risk for companies with small (versus big) market caps and high (versus low) book-to-market ratios.</p>
+<p>Carhart (1997) suggests an additional factor, momentum, and presents a 4 factor model.</p>
+<p>Here we estimate Carhart’s 4 factor model for the Brazilian market, with the momentum factor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">factors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;http://nefin.com.br/resources/risk_factors/nefin_factors.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Unnamed: 0&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">factors</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
+<span class="n">factors</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">MKT</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="s2">&quot;mkt-rf&quot;</span><span class="p">]</span>
+<span class="n">SMB</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="s1">&#39;smb&#39;</span><span class="p">]</span>
+<span class="n">HML</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="s1">&#39;hml&#39;</span><span class="p">]</span>
+<span class="n">MOM</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="s1">&#39;mom&#39;</span><span class="p">]</span>
+<span class="n">factors</span><span class="p">[</span><span class="s1">&#39;2012-01-01&#39;</span><span class="p">:</span><span class="s1">&#39;2018-01-01&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mkt</th>
+      <th>rf</th>
+      <th>mkt-rf</th>
+      <th>smb</th>
+      <th>hml</th>
+      <th>mom</th>
+      <th>illiq</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2012-01-02</th>
+      <td>0.008443</td>
+      <td>0.000403</td>
+      <td>0.008041</td>
+      <td>0.010984</td>
+      <td>0.001223</td>
+      <td>-0.010802</td>
+      <td>0.004252</td>
+    </tr>
+    <tr>
+      <th>2012-01-03</th>
+      <td>0.018749</td>
+      <td>0.000402</td>
+      <td>0.018347</td>
+      <td>-0.005955</td>
+      <td>0.035185</td>
+      <td>-0.014981</td>
+      <td>0.011887</td>
+    </tr>
+    <tr>
+      <th>2012-01-04</th>
+      <td>-0.000414</td>
+      <td>0.000401</td>
+      <td>-0.000815</td>
+      <td>0.001948</td>
+      <td>0.019470</td>
+      <td>-0.003188</td>
+      <td>-0.001168</td>
+    </tr>
+    <tr>
+      <th>2012-01-05</th>
+      <td>-0.010354</td>
+      <td>0.000400</td>
+      <td>-0.010754</td>
+      <td>-0.001767</td>
+      <td>-0.003120</td>
+      <td>0.002764</td>
+      <td>0.004441</td>
+    </tr>
+    <tr>
+      <th>2012-01-06</th>
+      <td>-0.000838</td>
+      <td>0.000399</td>
+      <td>-0.001237</td>
+      <td>0.004133</td>
+      <td>-0.000962</td>
+      <td>-0.006387</td>
+      <td>-0.006364</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2017-12-21</th>
+      <td>0.020247</td>
+      <td>0.000264</td>
+      <td>0.019982</td>
+      <td>0.002543</td>
+      <td>0.007074</td>
+      <td>-0.001702</td>
+      <td>0.002215</td>
+    </tr>
+    <tr>
+      <th>2017-12-22</th>
+      <td>0.000024</td>
+      <td>0.000264</td>
+      <td>-0.000241</td>
+      <td>0.009761</td>
+      <td>-0.003633</td>
+      <td>-0.011030</td>
+      <td>0.008627</td>
+    </tr>
+    <tr>
+      <th>2017-12-26</th>
+      <td>0.007100</td>
+      <td>0.000264</td>
+      <td>0.006836</td>
+      <td>-0.001920</td>
+      <td>-0.000744</td>
+      <td>0.001960</td>
+      <td>-0.000204</td>
+    </tr>
+    <tr>
+      <th>2017-12-27</th>
+      <td>0.005499</td>
+      <td>0.000265</td>
+      <td>0.005234</td>
+      <td>0.002556</td>
+      <td>-0.005621</td>
+      <td>-0.000204</td>
+      <td>0.005463</td>
+    </tr>
+    <tr>
+      <th>2017-12-28</th>
+      <td>0.003234</td>
+      <td>0.000265</td>
+      <td>0.002969</td>
+      <td>0.012808</td>
+      <td>0.002307</td>
+      <td>-0.012124</td>
+      <td>0.008983</td>
+    </tr>
+  </tbody>
+</table>
+<p>1483 rows × 7 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># four factor model</span>
+
+<span class="n">start_date</span> <span class="o">=</span> <span class="s2">&quot;2012-01-01&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2018-01-01&quot;</span>
+<span class="n">itsa</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;ITSA3.SA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">end_date</span><span class="p">)</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">itsa</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">ret</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;excess&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rf&quot;</span><span class="p">])</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;excess&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">]))</span> <span class="c1"># add_constant so that our model has an intercept</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 excess   R-squared:                       0.308
+Model:                            OLS   Adj. R-squared:                  0.306
+Method:                 Least Squares   F-statistic:                     164.0
+Date:                Thu, 11 Jan 2024   Prob (F-statistic):          3.20e-116
+Time:                        09:24:41   Log-Likelihood:                 3826.8
+No. Observations:                1481   AIC:                            -7644.
+Df Residuals:                    1476   BIC:                            -7617.
+Df Model:                           4                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0001      0.000      0.273      0.785      -0.001       0.001
+mkt-rf         0.9352      0.048     19.330      0.000       0.840       1.030
+smb           -0.0779      0.052     -1.484      0.138      -0.181       0.025
+hml            0.0306      0.046      0.664      0.507      -0.060       0.121
+mom            0.0458      0.034      1.338      0.181      -0.021       0.113
+==============================================================================
+Omnibus:                      175.655   Durbin-Watson:                   2.481
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1210.731
+Skew:                           0.306   Prob(JB):                    1.24e-263
+Kurtosis:                       7.387   Cond. No.                         130.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<p>As ITSA3 has both a big market cap and high market value (low book-to-market ratio), it makes sense that SMB and HML are not statistically significant in our model, and therefore do not help in explaining ITSA3 returns. The same goes for alpha, i.e., our model intercept and the momentum factor. However, the market excess returns (<span class="math notranslate nohighlight">\(R_m - R_f\)</span>) factor is statistically significant.</p>
+</section>
+<section id="arbitrage-pricing-theory">
+<h2>Arbitrage Pricing Theory<a class="headerlink" href="#arbitrage-pricing-theory" title="Permalink to this heading">#</a></h2>
+<p>We can also derive linear models for the cross section of stock returns in additional ways, such as the Arbitrage Pricing Theory (APT).</p>
+<p>An opportunity of earning more than the risk-free rate without taking on additional risk is known as arbitrage. APT is based on the premise of no-arbitrage, that is, whenever an arbitrage opportunity appears on the market, agents will take advantage of it, pricing it out and driving market back to equilibrium.</p>
+<p>APT seeks to explain asset returns in function of explanatory variables known as factors. Factors can be the same ones as mentioned in the CAPM or Fama-French models, but also macroeconomic variables, for example.</p>
+<p>The main empirical challenge of APT is choosing the right amount of factors along with the variables to be employed as factors. This can be seen as a variable selection problem, or dimensionality reduction in machine learning terminology.</p>
+<p>If we take the market factor to be our only factor, the APT will reach similar conclusions as the CAPM. The APT, however, has “weaker” premises behind it. The CAPM requires all market agents to be “mean-variance optimizers”, while the APT only requires that a subset of market agents be pricing out arbitrage opportunities.</p>
+<p>Here we try to estimate an APT model for ITSA3 with inflation, industrial capacity and exchange rate as factors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;http://api.bcb.gov.br/dados/serie/bcdata.sgs.16122/dados?formato=csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span><span class="n">decimal</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">infl</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">infl</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dayfirst</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ind_cap</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;http://api.bcb.gov.br/dados/serie/bcdata.sgs.28561/dados?formato=csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span><span class="n">decimal</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">ind_cap</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ind_cap</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dayfirst</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">exch_rate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;http://api.bcb.gov.br/dados/serie/bcdata.sgs.10813/dados?formato=csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span><span class="n">decimal</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">exch_rate</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">exch_rate</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dayfirst</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">factors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">infl</span><span class="p">,</span><span class="n">ind_cap</span><span class="p">,</span><span class="n">exch_rate</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;MS&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bfill&quot;</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="s1">&#39;2005-01-01&#39;</span><span class="p">:</span><span class="s1">&#39;2020-01-01&#39;</span><span class="p">]</span>
+<span class="n">factors</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Inflation&quot;</span><span class="p">,</span><span class="s2">&quot;Industrial capacity&quot;</span><span class="p">,</span><span class="s2">&quot;Exchange rate&quot;</span><span class="p">]</span>
+<span class="n">factors</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Inflation</th>
+      <th>Industrial capacity</th>
+      <th>Exchange rate</th>
+    </tr>
+    <tr>
+      <th>data</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2005-01-01</th>
+      <td>0.65</td>
+      <td>83.6</td>
+      <td>2.6674</td>
+    </tr>
+    <tr>
+      <th>2005-02-01</th>
+      <td>0.65</td>
+      <td>84.0</td>
+      <td>2.6122</td>
+    </tr>
+    <tr>
+      <th>2005-03-01</th>
+      <td>0.76</td>
+      <td>82.9</td>
+      <td>2.6003</td>
+    </tr>
+    <tr>
+      <th>2005-04-01</th>
+      <td>0.79</td>
+      <td>82.7</td>
+      <td>2.6542</td>
+    </tr>
+    <tr>
+      <th>2005-05-01</th>
+      <td>0.56</td>
+      <td>81.3</td>
+      <td>2.5138</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2019-09-01</th>
+      <td>0.08</td>
+      <td>75.5</td>
+      <td>4.1575</td>
+    </tr>
+    <tr>
+      <th>2019-10-01</th>
+      <td>0.21</td>
+      <td>75.7</td>
+      <td>4.1734</td>
+    </tr>
+    <tr>
+      <th>2019-11-01</th>
+      <td>0.44</td>
+      <td>75.4</td>
+      <td>3.9780</td>
+    </tr>
+    <tr>
+      <th>2019-12-01</th>
+      <td>0.69</td>
+      <td>75.1</td>
+      <td>4.2255</td>
+    </tr>
+    <tr>
+      <th>2020-01-01</th>
+      <td>0.31</td>
+      <td>75.7</td>
+      <td>4.0207</td>
+    </tr>
+  </tbody>
+</table>
+<p>181 rows × 3 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itsa</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;ITSA3.SA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s1">&#39;2004-12-10&#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">&#39;2020-01-01&#39;</span><span class="p">)</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">itsa</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;MS&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;ffill&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">ret</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;returns&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;returns&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                returns   R-squared:                       0.030
+Model:                            OLS   Adj. R-squared:                  0.013
+Method:                 Least Squares   F-statistic:                     1.787
+Date:                Thu, 11 Jan 2024   Prob (F-statistic):              0.151
+Time:                        09:24:46   Log-Likelihood:                 197.25
+No. Observations:                 179   AIC:                            -386.5
+Df Residuals:                     175   BIC:                            -373.7
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+=======================================================================================
+                          coef    std err          t      P&gt;|t|      [0.025      0.975]
+---------------------------------------------------------------------------------------
+const                   0.5132      0.333      1.543      0.125      -0.143       1.170
+Inflation              -0.0538      0.034     -1.594      0.113      -0.120       0.013
+Industrial capacity    -0.0052      0.004     -1.401      0.163      -0.012       0.002
+Exchange rate          -0.0243      0.018     -1.381      0.169      -0.059       0.010
+==============================================================================
+Omnibus:                        8.578   Durbin-Watson:                   2.063
+Prob(Omnibus):                  0.014   Jarque-Bera (JB):               13.710
+Skew:                           0.221   Prob(JB):                      0.00105
+Kurtosis:                       4.282   Cond. No.                     4.38e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 4.38e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="additional-references-for-this-section">
+<h2>Additional references for this section<a class="headerlink" href="#additional-references-for-this-section" title="Permalink to this heading">#</a></h2>
+<p>Bodie, Z., Kane, A., Marcus, A. J. (2018). Investments. Chapter 9 contains a conceptual derivation of the CAPM and its relation to the efficient frontier, while Chapter 10 introduces APT and multifactor models.</p>
+<p>MacKinlay, A. C., Lo, A. W., Campbell, J. Y. (2012). The Econometrics of Financial Markets. Chapter 5 is focused around the empirical estimation of the CAPM and details the Fama-MacBeth procedure, while Chapter 6 is about APT and multifactor models.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="CH2_cross_section.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 2: The cross section of asset returns</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="CH2.2_linear_models_bayesian.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Linear models: classic and Bayesian approaches</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-asset-pricing-model">Capital Asset Pricing Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#market-portfolio-and-the-cml">Market portfolio and the CML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fama-macbeth-regressions">Fama-MacBeth regressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multifactor-models">Multifactor models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arbitrage-pricing-theory">Arbitrage Pricing Theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Martins
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  This book is available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license.
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

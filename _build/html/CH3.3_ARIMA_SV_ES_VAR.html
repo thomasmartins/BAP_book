@@ -1,0 +1,1467 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Bayesian state space approach for nonsynchronous trading &#8212; Bayesian Methods in Asset Pricing</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CH3.3_ARIMA_SV_ES_VAR';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="ref_chapter.html" />
+    <link rel="prev" title="Time series modeling: classical and Bayesian approaches" href="CH3.2_bayesian_timeseries.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="landing_intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/BAP_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/BAP_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="landing_intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH1_allocation.html">Chapter 1: Risk, return and allocation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH1.1_returns_mvo.html">Returns, risk and diversification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.2_bayes.html">Bayesian inference and computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH1.3_black_litterman.html">Black-Litterman model for portfolio allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="CH2_cross_section.html">Chapter 2: The cross section of asset returns</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CH2.1_cross_section_factors.html">The cross-section of stock returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.2_linear_models_bayesian.html">Linear models: classic and Bayesian approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH2.3_hierarchical_bayesian_capm.html">Bayesian techniques for factor models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="CH3_time_series.html">Chapter 3: Time series</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="CH3.1_timeseries_stockprices.html">Time series of stock prices and returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CH3.2_bayesian_timeseries.html">Time series modeling: classical and Bayesian approaches</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Bayesian state space approach for nonsynchronous trading</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref_chapter.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/thomasmartins/BAP_book/issues/new?title=Issue%20on%20page%20%2FCH3.3_ARIMA_SV_ES_VAR.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/CH3.3_ARIMA_SV_ES_VAR.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bayesian state space approach for nonsynchronous trading</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Bayesian state space approach for nonsynchronous trading</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-of-dynamic-var-es-with-stochastic-volatility-from-the-posterior-predictive-distribution">Calculation of dynamic VaR/ES with stochastic volatility from the posterior predictive distribution</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bayesian-state-space-approach-for-nonsynchronous-trading">
+<h1>Bayesian state space approach for nonsynchronous trading<a class="headerlink" href="#bayesian-state-space-approach-for-nonsynchronous-trading" title="Permalink to this heading">#</a></h1>
+<p>Previously we have mentioned the problem of nonsynchronous trading and some of its aspects, such as the bid-ask bounce. When we have a long time series with daily frequency, this does not have much of an impact, however in higher frequencies, e.g., minute by minute, this can be an issue.</p>
+<p>We will first look at a 1-minute frequency series of the price (and also returns) of a stock with lower trading volume.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">yfinance</span> <span class="k">as</span> <span class="nn">yf</span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BDay</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2024-01-10 14:00:07.750461&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">today_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;today&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">last_bday</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BDay</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">morn_price</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;MORN&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">last_bday</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">today_date</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1m&quot;</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">morn_price_full</span> <span class="o">=</span> <span class="n">morn_price</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pad&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">morn_price_full</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x221fd7f9090&gt;]
+</pre></div>
+</div>
+<img alt="_images/7637b559a526393aa06def797f1998e518192c8f27141545d9d602801febf365.png" src="_images/7637b559a526393aa06def797f1998e518192c8f27141545d9d602801febf365.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">morn_price_full</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x221fe1336a0&gt;]
+</pre></div>
+</div>
+<img alt="_images/30dd157142b5aff54481e9421895ca78b17f638e7c7e799e0fc20857408b48c1.png" src="_images/30dd157142b5aff54481e9421895ca78b17f638e7c7e799e0fc20857408b48c1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">returns</span> <span class="o">=</span> <span class="n">morn_price_full</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">returns</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Datetime&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/843f6597c2b114be104274ed1daf7dde03213e317553df86d9dc246033ab71ad.png" src="_images/843f6597c2b114be104274ed1daf7dde03213e317553df86d9dc246033ab71ad.png" />
+</div>
+</div>
+<p>You can see that the stock does not trade at many given minutes. This is reflected in the returns series, where it is equal to zero at many periods. That means that we have to deal with the issue of missing data.</p>
+<p>This is where we introduce <em>Gaussian processes</em>, which is a Bayesian approach for latent variable regression. A state space model with the latent variable as a Gaussian process can be written as</p>
+<p><span class="math notranslate nohighlight">\(y_t = f(x_t) + \varepsilon_t\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(f(x) \sim GP(m(x), k(x,x'))\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(m(x)\)</span> is a mean function and <span class="math notranslate nohighlight">\(k(x,x')\)</span> is a covariance function between points <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x'\)</span> of the latent variable.</p>
+<p>Gaussian processes are a type of nonparametric model. Nonparametric models are named like that because they do not have a fixed number of parameters, and instead allow for flexibility letting the number of parameters vary with the data. This is advantageous in our case because we have unevenly observed data, with irregular intervals between observations. In the case of Gaussian processes, the estimated latent variable is the function <span class="math notranslate nohighlight">\(f(x)\)</span>, which can be evaluated for any value of <span class="math notranslate nohighlight">\(x\)</span>, including at time periods where we did not have an observation for <span class="math notranslate nohighlight">\(y_t\)</span>.</p>
+<p>Now, let’s look at the functions <span class="math notranslate nohighlight">\(m(x)\)</span> and <span class="math notranslate nohighlight">\(k(x,x')\)</span>. The first one is a mean function that is generally set to zero or a constant level. The other, <span class="math notranslate nohighlight">\(K(x,x')\)</span> is a covariance function between points <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x'\)</span>. Note that there is no fixed length between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x'\)</span>, but the value of <span class="math notranslate nohighlight">\(K\)</span> changes as the distance between both points grow.</p>
+<p>One example of covariance function for Gaussian processes is the exponentiated quadratic function:</p>
+<p><span class="math notranslate nohighlight">\(k(x, x') = \eta^2 * \mathrm{exp}\left[ -\frac{(x - x')^2}{2 \ell^2} \right]\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(\eta\)</span> and <span class="math notranslate nohighlight">\(\ell\)</span> are parameters. We can see that the covariance is a function of the distance <span class="math notranslate nohighlight">\((x - x')^2\)</span>, increasing as the distance shortens.</p>
+<p>Another covariance function is the exponential function</p>
+<p><span class="math notranslate nohighlight">\(k(x, x') = \mathrm{exp}\left[ -\frac{||x - x'||}{2\ell^2} \right]\)</span>,</p>
+<p>which is not a function of the quadratic deviation <span class="math notranslate nohighlight">\((x - x')^2\)</span> but of the absolute deviation <span class="math notranslate nohighlight">\(||x - x'||\)</span>.</p>
+<p>We also have the Matérn 3/2 function:</p>
+<p><span class="math notranslate nohighlight">\(k(x, x') = \left(1 + \frac{\sqrt{3(x - x')^2}}{\ell}\right)\mathrm{exp}\left[ - \frac{\sqrt{3(x - x')^2}}{\ell} \right]\)</span></p>
+<p>A complete list of Gaussian process covariance functions can be found in: <a class="reference external" href="https://www.pymc.io/projects/examples/en/latest/gaussian_processes/GP-MeansAndCovs.html">https://www.pymc.io/projects/examples/en/latest/gaussian_processes/GP-MeansAndCovs.html</a></p>
+<p>We can then choose one of the functions to be the prior covariance function for our Gaussian process. For our example, let’s use the Matérn 3/2</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lin_sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">returns</span><span class="p">))</span>
+<span class="n">lin_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">lin_sp</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">returns</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;lin_sp&quot;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">lin_df</span><span class="p">,</span> <span class="n">morn_price</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()[</span><span class="s1">&#39;lin_sp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">gp_model</span><span class="p">:</span>
+    <span class="n">mean_f</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">morn_price</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+    <span class="n">lengthscale</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="p">)</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">Latent</span><span class="p">(</span><span class="n">mean_func</span> <span class="o">=</span> <span class="n">mean_f</span><span class="p">,</span> <span class="n">cov_func</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">prior</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">f</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">morn_price</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">gp_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/21c4f248775d679ce7eeeac5752e9c099b9629c0ce032ff51e80a7c311c4b124.svg" src="_images/21c4f248775d679ce7eeeac5752e9c099b9629c0ce032ff51e80a7c311c4b124.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">gp_model</span><span class="p">:</span>
+    <span class="n">trace_gp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [f_rotated_, sigma]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 41:27<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 2502 seconds.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gp_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">trace_gp</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># median across chains and draws </span>
+<span class="n">gp_hdi_lower</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">hdi</span><span class="p">(</span><span class="n">trace_gp</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">.95</span><span class="p">)[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">gp_hdi_upper</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">hdi</span><span class="p">(</span><span class="n">trace_gp</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">.95</span><span class="p">)[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">morn_price</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;09:30&#39;, &#39;09:32&#39;, &#39;09:38&#39;, &#39;09:52&#39;, &#39;10:00&#39;, &#39;10:01&#39;, &#39;10:04&#39;, &#39;10:13&#39;,
+       &#39;10:17&#39;, &#39;10:19&#39;,
+       ...
+       &#39;15:42&#39;, &#39;15:48&#39;, &#39;15:50&#39;, &#39;15:52&#39;, &#39;15:53&#39;, &#39;15:54&#39;, &#39;15:55&#39;, &#39;15:57&#39;,
+       &#39;15:58&#39;, &#39;15:59&#39;],
+      dtype=&#39;object&#39;, name=&#39;Datetime&#39;, length=101)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gp_median</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mean and 2σ region&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gp_hdi_upper</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gp_hdi_lower</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gp_hdi_lower</span><span class="p">,</span> <span class="n">gp_hdi_upper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">locator_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">morn_price</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">85</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">morn_price</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x221834cf190&gt;]
+</pre></div>
+</div>
+<img alt="_images/b26d881d4bb6c30cffe28da9b80a9689a986b528ead27f7179e8f0bc5552bceb.png" src="_images/b26d881d4bb6c30cffe28da9b80a9689a986b528ead27f7179e8f0bc5552bceb.png" />
+</div>
+</div>
+<p>We can take this purely statistical model for our data, and improve upon it with econometric theory. For example, bid-ask bounce effects might be present in our data because of nonsynchronous trading.</p>
+<p>Roll’s model for the bid-ask spread is</p>
+<p><span class="math notranslate nohighlight">\(P_t = P_t^* + I_t \frac{s}{2}\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(I_t = p * 1 + (1-p) * -1\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(P_t\)</span> is the observed price, <span class="math notranslate nohighlight">\(P_t^*\)</span> is the unobserved fundamental price, <span class="math notranslate nohighlight">\(s\)</span> is the spread and <span class="math notranslate nohighlight">\(I_t\)</span> is an indicator variable that assumes the values <span class="math notranslate nohighlight">\(1\)</span> or <span class="math notranslate nohighlight">\(-1\)</span> with 50% probability each. We can incorporate this structure into our Gaussian process model and estimate the bid-ask spread</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">gp_model_roll</span><span class="p">:</span>
+    
+    <span class="n">s</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Gamma</span><span class="p">(</span><span class="s2">&quot;spread&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    
+    <span class="n">I</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="n">mean_f</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">morn_price</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+    <span class="n">lengthscale</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="p">)</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">Latent</span><span class="p">(</span><span class="n">mean_func</span> <span class="o">=</span> <span class="n">mean_f</span><span class="p">,</span> <span class="n">cov_func</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">prior</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">obs_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">f</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">obs_noise</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">morn_price</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">gp_model_roll</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c4a73bd02f7c092baa4f6077e252e9fb48b64eb6a524c663aaecd044c9e2f7b2.svg" src="_images/c4a73bd02f7c092baa4f6077e252e9fb48b64eb6a524c663aaecd044c9e2f7b2.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">gp_model_roll</span><span class="p">:</span>
+    <span class="n">trace_roll</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CompoundStep
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;NUTS: [spread, f_rotated_, sigma]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;Metropolis: [p]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 09:48<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 606 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roll_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">trace_roll</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># median across chains and draws </span>
+<span class="n">roll_hdi_lower</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">hdi</span><span class="p">(</span><span class="n">trace_roll</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">.95</span><span class="p">)[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">roll_hdi_upper</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">hdi</span><span class="p">(</span><span class="n">trace_roll</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">.95</span><span class="p">)[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">roll_median</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mean and 2σ region&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">roll_hdi_upper</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">roll_hdi_lower</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">roll_hdi_lower</span><span class="p">,</span> <span class="n">roll_hdi_upper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">locator_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">morn_price</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">85</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">morn_price</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x22188cc6800&gt;]
+</pre></div>
+</div>
+<img alt="_images/b411ffc59ab3d4f75e42c467111f9e5660620085ca170e901e6ef000b5cfa87b.png" src="_images/b411ffc59ab3d4f75e42c467111f9e5660620085ca170e901e6ef000b5cfa87b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_roll</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;spread&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;spread&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;spread&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/f9579b48e5cf05e335e570ae73f5de8170a95cd173dd9c284d78ad146271c907.png" src="_images/f9579b48e5cf05e335e570ae73f5de8170a95cd173dd9c284d78ad146271c907.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="calculation-of-dynamic-var-es-with-stochastic-volatility-from-the-posterior-predictive-distribution">
+<h1>Calculation of dynamic VaR/ES with stochastic volatility from the posterior predictive distribution<a class="headerlink" href="#calculation-of-dynamic-var-es-with-stochastic-volatility-from-the-posterior-predictive-distribution" title="Permalink to this heading">#</a></h1>
+<p>Value at risk (VaR) and expected shortfall (ES) are standard measures of risk for financial assets/portfolios. The former is the worst possible loss at a confidence level <span class="math notranslate nohighlight">\(\alpha\)</span> (e.g. 95%) and the latter is the mean loss given that one of the <span class="math notranslate nohighlight">\(1 - \alpha\)</span> worst outcomes has happened.</p>
+<p>VaR and ES can be obtained from historical returns or parametric/Monte Carlo approaches, and most common implementations assume constant volatility over time. Using Bayesian methods we can fit a model with time-varying volatility to the historical returns data, and see how VaR/ES changes along time.</p>
+<p>Stochastic volatility (SV) models are a type of state space model, where the volatility is a latent variable. As the volatility is the standard deviation of returns, and it can never assume negative values, a SV model has the general specification</p>
+<p><span class="math notranslate nohighlight">\(y_t \sim N(0, \exp \{ v_t \})\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(v_t = v_{t-1} + \varepsilon_t\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(y_t\)</span> are the returns and <span class="math notranslate nohighlight">\(v_t\)</span> is known as the log-volatility. The functional form for the log-volatility above is a random walk, but other processes can also be used.</p>
+<p>Let’s try fitting a SV model where the log-volatility follows a random walk to a series of returns</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">amzn_price</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;AMZN&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;2019-01-01&quot;</span><span class="p">)[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span>
+<span class="n">amzn_returns</span> <span class="o">=</span> <span class="n">amzn_price</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x22188d64a30&gt;]
+</pre></div>
+</div>
+<img alt="_images/3fdee83ee2bd84d261859df1de1166feb43b6ca1a0d481dcbe74a93874c7c518.png" src="_images/3fdee83ee2bd84d261859df1de1166feb43b6ca1a0d481dcbe74a93874c7c518.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">bayesian_sv</span><span class="p">:</span>
+    <span class="n">sigma_vol</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_vol&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">volatility</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">GaussianRandomWalk</span><span class="p">(</span><span class="s2">&quot;volatility&quot;</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma_vol</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">volatility</span><span class="p">),</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">bayesian_sv</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\pymc\distributions\timeseries.py:293: UserWarning: Initial distribution not specified, defaulting to `Normal.dist(0, 100)`.You can specify an init_dist manually to suppress this warning.
+  warnings.warn(
+</pre></div>
+</div>
+<img alt="_images/0378cd5fc7abfff7ed220191092424245884ae7fd6933b1e4cdd255e285e792e.svg" src="_images/0378cd5fc7abfff7ed220191092424245884ae7fd6933b1e4cdd255e285e792e.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">bayesian_sv</span><span class="p">:</span>
+    <span class="n">trace_sv</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [sigma_vol, volatility]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 15:29<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 944 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vol_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">trace_sv</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;volatility&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># median across chains and draws </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vol_median</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Median posterior volatility&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Median posterior volatility&#39;)
+</pre></div>
+</div>
+<img alt="_images/57b2d04b2d52a0ee2a67e17b05c76ac52ab30ab9d45b735c3936082baaf01ac6.png" src="_images/57b2d04b2d52a0ee2a67e17b05c76ac52ab30ab9d45b735c3936082baaf01ac6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_sv</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~volatility&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/30fa33ece766ba917a60d7d328bc23087d0ac76bc4afeb968a2dd1ccf618d5e3.png" src="_images/30fa33ece766ba917a60d7d328bc23087d0ac76bc4afeb968a2dd1ccf618d5e3.png" />
+</div>
+</div>
+<p>Now, instead of a random walk, we can try to specify the log-volatility process as an AR(1), which is common in the literature (<a class="reference external" href="https://dspace.cuni.cz/bitstream/handle/20.500.11956/40737/DPTX_2010_2__0_323248_0_111009.pdf?sequence=1">https://dspace.cuni.cz/bitstream/handle/20.500.11956/40737/DPTX_2010_2__0_323248_0_111009.pdf?sequence=1</a>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">bayesian_sv_ar</span><span class="p">:</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">sigma_vol</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_vol&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">volatility</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">AR</span><span class="p">(</span><span class="s2">&quot;volatility&quot;</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="n">phi</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma_vol</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">volatility</span><span class="p">),</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">bayesian_sv_ar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\pymc\distributions\timeseries.py:558: UserWarning: Initial distribution not specified, defaulting to `Normal.dist(0, 100, shape=...)`. You can specify an init_dist manually to suppress this warning.
+  warnings.warn(
+</pre></div>
+</div>
+<img alt="_images/ea93e5439ac861046c323ee440c224ed225754feda810116769c50f87f227f91.svg" src="_images/ea93e5439ac861046c323ee440c224ed225754feda810116769c50f87f227f91.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">bayesian_sv_ar</span><span class="p">:</span>
+    <span class="n">trace_sv_ar</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [phi, sigma_vol, volatility]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 14:57<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 913 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vol_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">trace_sv_ar</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;volatility&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># median across chains and draws </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vol_median</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Median posterior volatility&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Median posterior volatility&#39;)
+</pre></div>
+</div>
+<img alt="_images/7158a064adaae5de93c9331d17fae57f4fc5667ea9ef25a982605fd29ff580f5.png" src="_images/7158a064adaae5de93c9331d17fae57f4fc5667ea9ef25a982605fd29ff580f5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_sv_ar</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~volatility&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;phi&#39;}&gt;, &lt;Axes: title={&#39;center&#39;: &#39;phi&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;]], dtype=object)
+</pre></div>
+</div>
+<img alt="_images/d31afb01bba352f72630207b166f40060eb414179dbc7b205aa782027417f375.png" src="_images/d31afb01bba352f72630207b166f40060eb414179dbc7b205aa782027417f375.png" />
+</div>
+</div>
+<p>It seems our AR coefficient (orange) heavily tends towards 1, which can be interpreted as evidence that the random walk assumption for our log-volatility seems valid.</p>
+<p>We can try to specify models with jumps for the returns. Jumps are discrete changes at specific time periods, and can emulate movements such as the market reacting to new information. Statistical models for jumps generally have two components: the jump size and an indicator variable of whether a jump has happened or not.</p>
+<p>A possible specification for jumps (<a class="reference external" href="https://joshuachan.org/papers/energy_GARCH_SV.pdf">https://joshuachan.org/papers/energy_GARCH_SV.pdf</a>) is <span class="math notranslate nohighlight">\(q_t k_t\)</span>, where <span class="math notranslate nohighlight">\(q_t\)</span> is a binary outcome variable (0 or 1) representing whether a jump happens or not at that period (with probability <span class="math notranslate nohighlight">\(\pi\)</span>), and <span class="math notranslate nohighlight">\(k_t\)</span> is the size of the jump.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">bayesian_sv_jump</span><span class="p">:</span>
+    <span class="n">sigma_vol</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_vol&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">volatility</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">GaussianRandomWalk</span><span class="p">(</span><span class="s2">&quot;volatility&quot;</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma_vol</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+        
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">jump_size</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Gamma</span><span class="p">(</span><span class="s2">&quot;jump size&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+    <span class="n">jump_occ</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="s2">&quot;jump occurrence&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pi</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+    <span class="n">jump</span> <span class="o">=</span> <span class="n">jump_size</span> <span class="o">*</span> <span class="n">jump_occ</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">jump</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">volatility</span><span class="p">),</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">bayesian_sv_jump</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\pymc\distributions\timeseries.py:293: UserWarning: Initial distribution not specified, defaulting to `Normal.dist(0, 100)`.You can specify an init_dist manually to suppress this warning.
+  warnings.warn(
+</pre></div>
+</div>
+<img alt="_images/d951459d052887fc0eb1b80bacbac9380a785c7df572e4123cd3341b357214c2.svg" src="_images/d951459d052887fc0eb1b80bacbac9380a785c7df572e4123cd3341b357214c2.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">bayesian_sv_jump</span><span class="p">:</span>
+    <span class="n">trace_sv_jump</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CompoundStep
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;NUTS: [sigma_vol, volatility, pi, jump size]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;Metropolis: [jump occurrence]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 1:36:19<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 5801 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\arviz\stats\diagnostics.py:592: RuntimeWarning: invalid value encountered in scalar divide
+  (between_chain_variance / within_chain_variance + num_samples - 1) / (num_samples)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vol_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">trace_sv_jump</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;volatility&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># median across chains and draws </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vol_median</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Median posterior volatility&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Median posterior volatility&#39;)
+</pre></div>
+</div>
+<img alt="_images/395c3fac56199d16f14a1b1611121f6b80204ea0695a7da660b70f6c13b13fb7.png" src="_images/395c3fac56199d16f14a1b1611121f6b80204ea0695a7da660b70f6c13b13fb7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_sv_jump</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~volatility&quot;</span><span class="p">,</span><span class="s1">&#39;~jump size&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;jump occurrence&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;jump occurrence&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;pi&#39;}&gt;, &lt;Axes: title={&#39;center&#39;: &#39;pi&#39;}&gt;]],
+      dtype=object)
+</pre></div>
+</div>
+<img alt="_images/8ec0996dfcae0b15bb25bf3d32cf341fe7669de34b3d9d486c4288e5c6a078f0.png" src="_images/8ec0996dfcae0b15bb25bf3d32cf341fe7669de34b3d9d486c4288e5c6a078f0.png" />
+</div>
+</div>
+<p>The estimated jump probability (pi) tends heavily towards zero, so we conclude that including jumps did not provide significant gains for our model.</p>
+<p>Lastly, Bayesian computation also allows us to specify the returns as coming from a t distribution, so we can also try that and assign a prior to the degrees of freedom parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">bayesian_sv_tdist</span><span class="p">:</span>
+    <span class="n">sigma_vol</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma_vol&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">volatility</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">GaussianRandomWalk</span><span class="p">(</span><span class="s2">&quot;volatility&quot;</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma_vol</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+
+    <span class="n">nu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s1">&#39;nu&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">StudentT</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">volatility</span><span class="p">),</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">bayesian_sv_tdist</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\USUARIO\anaconda3\envs\pymc_env\lib\site-packages\pymc\distributions\timeseries.py:293: UserWarning: Initial distribution not specified, defaulting to `Normal.dist(0, 100)`.You can specify an init_dist manually to suppress this warning.
+  warnings.warn(
+</pre></div>
+</div>
+<img alt="_images/30a7c8fe3d6c2b983f2066ab521b4a3a0d1998206471fb982755e4ff5d19a3b0.svg" src="_images/30a7c8fe3d6c2b983f2066ab521b4a3a0d1998206471fb982755e4ff5d19a3b0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">bayesian_sv_tdist</span><span class="p">:</span>
+    <span class="n">trace_sv_tdist</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [sigma_vol, volatility, nu]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 29:08<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 1767 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vol_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">trace_sv_tdist</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;volatility&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># median across chains and draws </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vol_median</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Median posterior volatility&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Median posterior volatility&#39;)
+</pre></div>
+</div>
+<img alt="_images/2da90923ffe48bb3fb234320df3b1f38ab435d814595d5fce165b15fe5a6f9c5.png" src="_images/2da90923ffe48bb3fb234320df3b1f38ab435d814595d5fce165b15fe5a6f9c5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_sv_tdist</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~volatility&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[&lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;,
+        &lt;Axes: title={&#39;center&#39;: &#39;sigma_vol&#39;}&gt;],
+       [&lt;Axes: title={&#39;center&#39;: &#39;nu&#39;}&gt;, &lt;Axes: title={&#39;center&#39;: &#39;nu&#39;}&gt;]],
+      dtype=object)
+</pre></div>
+</div>
+<img alt="_images/06dfcedef8d901fda668a40ad9c8870db56c3bc187e65348e96494beeca11690.png" src="_images/06dfcedef8d901fda668a40ad9c8870db56c3bc187e65348e96494beeca11690.png" />
+</div>
+</div>
+<p>Now that we have a few stochastic models at hand, we can pick one to calculate our value-at-risk/expected shortfall from. For example purposes, we shall pick the t distribution model.</p>
+<p>Remember the Bayesian inference procedure for parameter(s) <span class="math notranslate nohighlight">\(\theta\)</span> and a set of data <span class="math notranslate nohighlight">\(y\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(P(\theta|y) = \frac{P(\theta)P(y|\theta)}{P(y)}\)</span>.</p>
+<p>A Bayesian model is defined as the joint distribuion of the data and all parameters. This means that, not only we can find the posterior distribution of the parameters given the priors and a set of data, we can also use the posterior obtained from a first set of data to sample unobserved future sets of data from the model. The distribution of possible future values of data given the posterior from a previous set of data is known as the <em>posterior predictive</em> distribution.</p>
+<p>Given a first set of data <span class="math notranslate nohighlight">\(y\)</span>, a future set of data <span class="math notranslate nohighlight">\(\tilde{y}\)</span> can be obtained as</p>
+<p><span class="math notranslate nohighlight">\(P(\tilde{y}|y) = \int_\Theta P(\tilde{y}|\theta,y)P(\theta|y)d\theta\)</span>,</p>
+<p>which is a marginalization over the parameter(s) <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>We can use our model to generate a set of posterior predictive data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">bayesian_sv_tdist</span><span class="p">:</span>
+    <span class="n">trace_sv_tdist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">trace_sv_tdist</span><span class="p">))</span>
+<span class="n">sv_ppd</span> <span class="o">=</span> <span class="n">trace_sv_tdist</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">pooled_chain</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="n">pp_returns</span> <span class="o">=</span> <span class="n">sv_ppd</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling: [y]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='20000' class='' max='20000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [20000/20000 00:14<00:00]
+    </div>
+    </div></div>
+</div>
+<p>The posterior predictive simulation generates 20000 samples for each period of our time series of returns. We can then calculate VaR and ES for the 20000 samples at each time period in order to obtain a dynamic VaR/ES</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conf_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">pp_returns</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">es</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">)):</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="n">pp_returns</span><span class="p">[</span><span class="n">i</span><span class="p">][(</span><span class="n">pp_returns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">pp_returns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">))]</span>
+    <span class="n">mean_tail</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+    <span class="n">es</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_tail</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;AMZN returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;5th percentile of returns (VaR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">es</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean return given worst 5% (ES)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Posterior predictive VaR and ES&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Posterior predictive VaR and ES&#39;)
+</pre></div>
+</div>
+<img alt="_images/e17f1d8184c35caa1178b354cf368acba4c83915519b2be6b589573c12aef983.png" src="_images/e17f1d8184c35caa1178b354cf368acba4c83915519b2be6b589573c12aef983.png" />
+</div>
+</div>
+<p>We can compare this dynamic VaR/ES obtained from the model with t-distributed returns and stochastic volatility to that of a model with normally distributed returns and constant volatility</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">normal_const_vol</span><span class="p">:</span>
+    <span class="n">volatility</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;volatility&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">volatility</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">normal_const_vol</span><span class="p">:</span>
+    <span class="n">trace_normal_cv</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">trace_normal_cv</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">trace_normal_cv</span><span class="p">))</span>
+<span class="n">nc_ppd</span> <span class="o">=</span> <span class="n">trace_normal_cv</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">pooled_chain</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="n">pp_returns_nc</span> <span class="o">=</span> <span class="n">nc_ppd</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auto-assigning NUTS sampler...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocess sampling (4 chains in 4 jobs)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NUTS: [volatility]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='28000' class='' max='28000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [28000/28000 00:34<00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 2_000 tune and 5_000 draw iterations (8_000 + 20_000 draws total) took 50 seconds.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling: [y]
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='20000' class='' max='20000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [20000/20000 00:03<00:00]
+    </div>
+    </div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conf_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">var_nc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">pp_returns_nc</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">es_nc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">amzn_returns</span><span class="p">)):</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="n">pp_returns_nc</span><span class="p">[</span><span class="n">i</span><span class="p">][(</span><span class="n">pp_returns_nc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">pp_returns_nc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">conf_level</span><span class="p">))]</span>
+    <span class="n">mean_tail</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+    <span class="n">es_nc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_tail</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">amzn_returns</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;AMZN returns&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;VaR t + SV&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">es</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ES t + SV&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">var_nc</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;VaR normal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">es_nc</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkorange&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashdot&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ES normal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;VaR and ES: t + SV vs. Normal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;VaR and ES: t + SV vs. Normal&#39;)
+</pre></div>
+</div>
+<img alt="_images/ac534ded858eedb205a65a9900c0aeaaa078676266e62f27bc348d2af4ff51a0.png" src="_images/ac534ded858eedb205a65a9900c0aeaaa078676266e62f27bc348d2af4ff51a0.png" />
+</div>
+</div>
+<p>For the normal model, the VaR/ES is constant because the posterior predictive returns at each time are sampled from a distribution with constant volatility. This can underestimate risk at high volatility periods and superestimate risk at low volatility periods.</p>
+<section id="additional-references-for-this-section">
+<h2>Additional references for this section<a class="headerlink" href="#additional-references-for-this-section" title="Permalink to this heading">#</a></h2>
+<p>Gaussian Processes for Time Series Forecasting with PyMC by Juan Orduz: <a class="reference external" href="https://juanitorduz.github.io/gp_ts_pymc3/">https://juanitorduz.github.io/gp_ts_pymc3/</a>.</p>
+<p>Campbell, John Y., Andrew W. Lo, and A. Craig MacKinlay. The Econometrics of Financial Markets. Princeton University Press, 1997.</p>
+<p>Roll, Richard. “A Simple Implicit Measure of the Effective Bid-Ask Spread in an Efficient Market” The Journal of Finance 39-4 (1984): 1127-1139.</p>
+<p>Tesarova, Viktoria. “Value at Risk: GARCH vs. Stochatistic Volatility Models: Empirical Study.” (2013).</p>
+<p>Chan, Joshua CC, and Angelia L. Grant. “Modeling energy price dynamics: GARCH versus stochastic volatility.” Energy Economics 54 (2016): 182-189.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="CH3.2_bayesian_timeseries.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Time series modeling: classical and Bayesian approaches</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ref_chapter.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Bayesian state space approach for nonsynchronous trading</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-of-dynamic-var-es-with-stochastic-volatility-from-the-posterior-predictive-distribution">Calculation of dynamic VaR/ES with stochastic volatility from the posterior predictive distribution</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references-for-this-section">Additional references for this section</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Thomas Martins
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  This book is available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license.
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
